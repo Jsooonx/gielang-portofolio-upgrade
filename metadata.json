@@ -1,0 +1,6 @@
+{
+  "name": "Gielang Portfolio",
+  "description": "A dark, moody, and cinematic portfolio page for Gielang, an aspiring computer science student and full-stack developer.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
