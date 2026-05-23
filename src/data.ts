@@ -112,16 +112,5 @@ export const achievementsData: Achievement[] = [
       "Programmed the control unit in C with real-time interrupt logic.",
       "Secured 1st place among top national student teams."
     ]
-  },
-  {
-    id: "self-guided-cs",
-    year: "2020 - Present",
-    title: "Self-Guided CS & Software Development",
-    description: "Learning advanced modern web architectures, translating logic from C/C++ to Python, and learning TypeScript, React, and Tailwind CSS.",
-    category: "activity",
-    details: [
-      "Implemented algorithms from scratch (sorting, graphs, search trees).",
-      "Transitioning web applications to type-safe React frontend interfaces."
-    ]
   }
 ];
