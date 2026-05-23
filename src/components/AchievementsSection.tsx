@@ -1,5 +1,5 @@
-import { useRef, useState, type ReactNode } from "react";
-import { motion, useInView } from "motion/react";
+import { useRef, useState, useEffect, type ReactNode } from "react";
+import { motion, AnimatePresence, useInView } from "motion/react";
 import { Trophy, Sparkles, Pin } from "lucide-react";
 import { achievementsData } from "../data";
 
@@ -40,18 +40,26 @@ const childVariants = {
 function ScrollReveal({
   children,
   index,
+  hasRevealed,
 }: {
   children: ReactNode;
   index: number;
+  hasRevealed: boolean;
+  key?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 24 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.7, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+      layout
+      initial={hasRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+      animate={hasRevealed ? { opacity: 1, y: 0 } : (isInView ? { opacity: 1, y: 0 } : {})}
+      exit={{ opacity: 0 }}
+      transition={hasRevealed 
+        ? { duration: 0.2, ease: "easeOut" } 
+        : { duration: 0.7, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }
+      }
     >
       {children}
     </motion.div>
@@ -60,8 +68,21 @@ function ScrollReveal({
 
 export function AchievementsSection() {
   const [activeFilter, setActiveFilter] = useState<'all' | 'achievement' | 'activity'>('all');
+  const [hasRevealed, setHasRevealed] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
   const headerInView = useInView(headerRef, { once: true, margin: "-80px" });
+
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const timelineInView = useInView(timelineRef, { once: true, margin: "-100px" });
+
+  useEffect(() => {
+    if (timelineInView) {
+      const timer = setTimeout(() => {
+        setHasRevealed(true);
+      }, 1000); // Disable entry animations after initial reveal
+      return () => clearTimeout(timer);
+    }
+  }, [timelineInView]);
 
   const filterOptions = [
     { label: "All Timeline", value: "all" as const },
@@ -120,10 +141,10 @@ export function AchievementsSection() {
       </div>
 
       {/* Timeline — fully inlined in map, key on the wrapping div */}
-      <div className="max-w-2xl mx-auto relative z-10">
-        {filteredAchievements.map((item, index) => (
-          <div key={item.id}>
-            <ScrollReveal index={index}>
+      <div ref={timelineRef} className="max-w-2xl mx-auto relative z-10">
+        <AnimatePresence initial={false}>
+          {filteredAchievements.map((item, index) => (
+            <ScrollReveal key={item.id} index={index} hasRevealed={hasRevealed}>
               <div className="relative flex gap-8 sm:gap-12">
                 {/* Left: icon + vertical line */}
                 <div className="flex flex-col items-center shrink-0 pt-1">
@@ -170,8 +191,8 @@ export function AchievementsSection() {
                 </div>
               </div>
             </ScrollReveal>
-          </div>
-        ))}
+          ))}
+        </AnimatePresence>
       </div>
     </section>
   );

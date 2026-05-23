@@ -102,7 +102,7 @@ export function ProjectsSection() {
 
       {/* Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto w-full relative z-10">
-        <AnimatePresence mode="popLayout" initial={false}>
+        <AnimatePresence initial={false}>
 
           {/* Decorative video card */}
           {activeFilter === 'all' && (
