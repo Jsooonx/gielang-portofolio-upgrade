@@ -179,27 +179,11 @@ export const projectsData: ProjectItem[] = [
     techStack: ["C", "Game Logic", "2D Arrays", "Modular Design"],
     githubLink: "https://github.com/Jsooonx/tic-tac-toe-c-engine",
     image: "/images/tictactoe.png",
-    featured: false,
+    featured: true,
     details: [
       "Built with a modular function architecture and 2D array board state representation.",
       "Supports both player-vs-player (PvP) and player-vs-computer (PvE) configurations.",
       "Designed with reusable C logic easily compileable and integrateable into larger games."
-    ]
-  },
-  {
-    id: "odin-recipes",
-    title: "Odin Recipes",
-    description: "A clean, multi-page recipes directory showcasing responsive layouts and semantic document structures.",
-    category: "flask-web",
-    techStack: ["HTML", "CSS", "Responsive Design", "Semantic Markup"],
-    githubLink: "https://github.com/Jsooonx/Odin-recipes-refactor",
-    demoLink: "https://jsooonx.github.io/Odin-recipes-refactor/",
-    image: "/images/odin_recipes.png",
-    featured: false,
-    details: [
-      "Constructed using semantic HTML5 to optimize SEO and accessibility.",
-      "Designed a responsive fluid layout with pure Vanilla CSS.",
-      "Organized structured recipes with navigation menus across pages."
     ]
   }
 ];
