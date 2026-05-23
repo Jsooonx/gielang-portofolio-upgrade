@@ -1,20 +1,47 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Gielang — Developer Portfolio
 
-# Run and deploy your AI Studio app
+A dark, moody, and cinematic developer portfolio page. Designed with modern web aesthetics, smooth scrolling, and dynamic micro-animations to showcase software engineering and robotics projects.
 
-This contains everything you need to run your app locally.
+## 🚀 Tech Stack
 
-View your app in AI Studio: https://ai.studio/apps/1cd9cec7-22d9-4997-abf6-4b4b0e66ee37
+- **Framework:** React 19 + TypeScript
+- **Styling:** Tailwind CSS
+- **Animations:** Motion (Framer Motion)
+- **Smooth Scroll:** Lenis Scroll
+- **Bundler:** Vite
 
-## Run Locally
+## ✨ Key Features
 
-**Prerequisites:**  Node.js
+- **Buttery-Smooth Scroll:** Embedded Lenis smooth scroll with exponential easing for a premium feel.
+- **Cinematic Entrance:** Dynamic text pull-up and scroll reveal animations for text elements.
+- **Project Showcase:** Interactive lists of projects categorized by language/framework with collapsible detail items.
+- **Robotics Achievements:** Timeline tracking of robotics championships and self-guided learning milestones.
 
+## 🛠️ Run Locally
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### Prerequisites
+Make sure you have **Node.js** (v18+) installed on your machine.
+
+1. **Clone the repository:**
+   ```bash
+   git clone <your-repository-url>
+   cd gielang-porto-prisma
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+
+4. **Build for production:**
+   ```bash
+   npm run build
+   ```
+
+---
+*Created by [Gielang](https://github.com/)*
