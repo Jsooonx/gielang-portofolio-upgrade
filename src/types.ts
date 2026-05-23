@@ -21,4 +21,5 @@ export interface Achievement {
   role?: string;
   description: string;
   details?: string[];
+  category: 'achievement' | 'activity';
 }

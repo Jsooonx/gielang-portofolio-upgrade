@@ -69,6 +69,7 @@ export const achievementsData: Achievement[] = [
     title: "CS50: Introduction to Computer Science",
     role: "Harvard University (via edX)",
     description: "Completed the full CS50 course content covering algorithms, memory, data structures, SQL, web development, Flask, and AJAX.",
+    category: "activity",
     details: [
       "Solved 17+ problem sets using C, Python, SQL, HTML, CSS, and JavaScript.",
       "Practiced problem solving on HackerRank, earning 5★ in Python, 4★ in C++, and 3★ in C.",
@@ -81,6 +82,7 @@ export const achievementsData: Achievement[] = [
     title: "Senior High School Diploma",
     role: "State Senior High School 2 Surabaya (SMAN 2 Surabaya), Indonesia",
     description: "Science Track (Advanced Mathematics & Physics). Graduated with GPA 93.5/100 (EQF level 4).",
+    category: "activity",
     details: [
       "Relevant Coursework: Advanced Mathematics, Physics."
     ]
@@ -91,6 +93,7 @@ export const achievementsData: Achievement[] = [
     title: "National Robotics Championship",
     role: "Lead Systems Programmer",
     description: "Successfully defended the national title, designing a fully autonomous navigation bot using C/C++ on microcontroller boards.",
+    category: "achievement",
     details: [
       "Built an autonomous line-follower and maze-solving robot chassis.",
       "Optimized infrared sensor reading filters and PID motor controller algorithms.",
@@ -103,6 +106,7 @@ export const achievementsData: Achievement[] = [
     title: "National Robotics Championship",
     role: "Hardware Integrator & Programmer",
     description: "Won the first national robotics championship gold medal, constructing a high-speed line tracker bot.",
+    category: "achievement",
     details: [
       "Designed a custom dual-motor chassis with integrated sensors.",
       "Programmed the control unit in C with real-time interrupt logic.",
@@ -114,6 +118,7 @@ export const achievementsData: Achievement[] = [
     year: "2020 - Present",
     title: "Self-Guided CS & Software Development",
     description: "Learning advanced modern web architectures, translating logic from C/C++ to Python, and learning TypeScript, React, and Tailwind CSS.",
+    category: "activity",
     details: [
       "Implemented algorithms from scratch (sorting, graphs, search trees).",
       "Transitioning web applications to type-safe React frontend interfaces."

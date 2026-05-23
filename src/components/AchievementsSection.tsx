@@ -1,4 +1,4 @@
-import { useRef, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { motion, useInView } from "motion/react";
 import { Trophy, Sparkles, Pin } from "lucide-react";
 import { achievementsData } from "../data";
@@ -59,8 +59,19 @@ function ScrollReveal({
 }
 
 export function AchievementsSection() {
+  const [activeFilter, setActiveFilter] = useState<'all' | 'achievement' | 'activity'>('all');
   const headerRef = useRef<HTMLDivElement>(null);
   const headerInView = useInView(headerRef, { once: true, margin: "-80px" });
+
+  const filterOptions = [
+    { label: "All Timeline", value: "all" as const },
+    { label: "Achievements", value: "achievement" as const },
+    { label: "Activities & Education", value: "activity" as const },
+  ];
+
+  const filteredAchievements = achievementsData.filter(item =>
+    activeFilter === 'all' ? true : item.category === activeFilter
+  );
 
   return (
     <section id="achievements" className="relative bg-black py-24 px-4 sm:px-6 md:px-12 lg:px-24 overflow-hidden">
@@ -69,7 +80,7 @@ export function AchievementsSection() {
       <div className="absolute bottom-1/3 right-1/4 w-[350px] h-[350px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Heading card — same dark card style as projects */}
-      <div ref={headerRef} className="max-w-4xl mx-auto mb-20 relative z-10 w-full">
+      <div ref={headerRef} className="max-w-4xl mx-auto mb-16 relative z-10 w-full">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -86,21 +97,38 @@ export function AchievementsSection() {
             variants={childVariants}
             className="text-gray-500 font-light text-sm sm:text-base max-w-lg"
           >
-            Milestones from robotics championships to self-taught engineering.
+            Milestones from robotics championships to education and certifications.
           </motion.p>
         </motion.div>
       </div>
 
+      {/* Filter Tabs */}
+      <div className="flex flex-wrap items-center justify-center gap-2 mb-16 relative z-20 max-w-2xl mx-auto">
+        {filterOptions.map((option) => (
+          <button
+            key={option.value}
+            onClick={() => setActiveFilter(option.value)}
+            className={`px-4 py-2 text-xs uppercase tracking-wider font-semibold rounded-full border transition-all duration-200 cursor-pointer ${
+              activeFilter === option.value
+                ? "border-primary text-black bg-primary"
+                : "border-white/10 text-primary/70 hover:border-white/30 hover:text-primary bg-zinc-950/40"
+            }`}
+          >
+            {option.label}
+          </button>
+        ))}
+      </div>
+
       {/* Timeline — fully inlined in map, key on the wrapping div */}
       <div className="max-w-2xl mx-auto relative z-10">
-        {achievementsData.map((item, index) => (
+        {filteredAchievements.map((item, index) => (
           <div key={item.id}>
             <ScrollReveal index={index}>
               <div className="relative flex gap-8 sm:gap-12">
                 {/* Left: icon + vertical line */}
                 <div className="flex flex-col items-center shrink-0 pt-1">
                   <div className="w-9 h-9 rounded-full bg-[#161616] border border-primary/30 flex items-center justify-center text-primary shadow-lg shadow-black/50 shrink-0">
-                    {item.title.includes("Robotics") ? (
+                    {item.category === "achievement" ? (
                       <Trophy className="w-3.5 h-3.5" />
                     ) : (
                       <Sparkles className="w-3.5 h-3.5" />
