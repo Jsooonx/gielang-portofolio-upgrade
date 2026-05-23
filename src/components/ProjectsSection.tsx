@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { motion, useInView } from "motion/react";
 import { Check, Github, ExternalLink, Code } from "lucide-react";
 import { projectsData } from "../data";
+import { ProjectItem } from "../types";
 
 const containerVariants = {
   hidden: { 
@@ -35,6 +36,126 @@ const childVariants = {
     }
   }
 };
+
+function ProjectCard({ project }: { project: ProjectItem; key?: string }) {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  return (
+    <motion.div
+      layout
+      onClick={() => setIsFlipped(!isFlipped)}
+      className="relative w-full h-[450px] perspective-1000 cursor-pointer group"
+    >
+      <motion.div
+        className="relative w-full h-full preserve-3d"
+        animate={{ rotateY: isFlipped ? 180 : 0 }}
+        transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+      >
+        {/* Front Side */}
+        <div className="absolute inset-0 w-full h-full rounded-2xl overflow-hidden flex flex-col justify-between p-6 sm:p-8 backface-hidden bg-[#121212] border border-white/5 group-hover:border-primary/20 hover:shadow-2xl hover:shadow-black transition-all duration-300">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-[9px] font-mono text-primary bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-full uppercase tracking-wider">
+              {project.category === 'python'
+                ? 'Python'
+                : project.category === 'flask-web'
+                ? 'Flask / Web'
+                : 'C / C++'}
+            </span>
+            <span className="text-[9px] font-mono text-gray-500 uppercase tracking-widest group-hover:text-primary transition-colors">
+              Click to Flip
+            </span>
+          </div>
+
+          <div className="flex-1 w-full relative rounded-xl overflow-hidden border border-white/5 bg-zinc-950 flex items-center justify-center">
+            {project.image ? (
+              <img
+                src={project.image}
+                alt={project.title}
+                className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-700 pointer-events-none select-none"
+              />
+            ) : (
+              <Code className="w-10 h-10 text-white/5" />
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+          </div>
+
+          <div className="mt-5">
+            <h3 className="text-lg font-normal text-[#E1E0CC] mb-1.5">{project.title}</h3>
+            <p className="text-[9px] font-mono text-gray-500 truncate uppercase tracking-wider">
+              {project.techStack.join(" • ")}
+            </p>
+          </div>
+        </div>
+
+        {/* Back Side */}
+        <div className="absolute inset-0 w-full h-full rounded-2xl p-6 sm:p-8 backface-hidden rotate-y-180 bg-[#121212] border border-white/5 flex flex-col justify-between hover:shadow-2xl hover:shadow-black transition-shadow duration-300">
+          <div>
+            <div className="flex items-center justify-between mb-5">
+              <span className="text-[9px] font-mono text-primary bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-full uppercase tracking-wider">
+                Details
+              </span>
+              <div className="flex items-center gap-3">
+                {project.githubLink && (
+                  <a
+                    href={project.githubLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-gray-500 hover:text-primary transition-colors p-1"
+                    title="GitHub"
+                  >
+                    <Github className="w-4 h-4" />
+                  </a>
+                )}
+                {project.demoLink && (
+                  <a
+                    href={project.demoLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-gray-500 hover:text-primary transition-colors p-1"
+                    title="Live Demo"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                )}
+              </div>
+            </div>
+
+            <h3 className="text-xl font-normal text-[#E1E0CC] mb-3">{project.title}</h3>
+            <p className="text-xs text-gray-400 font-light leading-relaxed mb-5">
+              {project.description}
+            </p>
+
+            {project.details && (
+              <div className="space-y-2.5 mb-5 border-t border-white/5 pt-4 overflow-y-auto max-h-[140px] pr-1">
+                {project.details.map((detail, idx) => (
+                  <div key={idx} className="flex items-start gap-2.5">
+                    <Check className="w-3.5 h-3.5 text-primary/60 shrink-0 mt-0.5" />
+                    <span className="text-[11px] text-gray-400 font-light leading-normal">
+                      {detail}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="pt-4 border-t border-white/5 flex flex-wrap gap-1.5">
+            {project.techStack.map((tech) => (
+              <span
+                key={tech}
+                className="text-[9px] font-mono text-gray-500 bg-zinc-950 px-2 py-0.5 rounded border border-white/5"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
 
 export function ProjectsSection() {
   const [activeFilter, setActiveFilter] = useState<'all' | 'python' | 'flask-web' | 'c-cpp'>('all');
@@ -104,7 +225,7 @@ export function ProjectsSection() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
-            className="relative min-h-[320px] rounded-2xl overflow-hidden group/video border border-white/5 bg-zinc-950"
+            className="relative h-[450px] rounded-2xl overflow-hidden group/video border border-white/5 bg-zinc-950"
           >
             <video
               src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260406_133058_0504132a-0cf3-4450-a370-8ea3b05c95d4.mp4"
@@ -129,83 +250,7 @@ export function ProjectsSection() {
         {projectsData
           .filter((project) => activeFilter === 'all' || project.category === activeFilter)
           .map((project) => (
-            <motion.div
-              key={project.id}
-              layout
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                opacity: { duration: 0.25 },
-                layout: { type: "spring", stiffness: 450, damping: 38 }
-              }}
-              className="bg-[#121212] rounded-2xl border border-white/5 flex flex-col justify-between p-6 sm:p-8 hover:border-primary/20 transition-colors duration-300 hover:shadow-2xl hover:shadow-black h-full"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="text-[9px] font-mono text-primary bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-full uppercase tracking-wider">
-                    {project.category === 'python'
-                      ? 'Python'
-                      : project.category === 'flask-web'
-                      ? 'Flask / Web'
-                      : 'C / C++'}
-                  </span>
-                  <div className="flex items-center gap-3">
-                    {project.githubLink && (
-                      <a
-                        href={project.githubLink}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-gray-500 hover:text-primary transition-colors"
-                        title="GitHub"
-                      >
-                        <Github className="w-4 h-4" />
-                      </a>
-                    )}
-                    {project.demoLink && (
-                      <a
-                        href={project.demoLink}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-gray-500 hover:text-primary transition-colors"
-                        title="Live Demo"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
-                    )}
-                  </div>
-                </div>
-
-                <h3 className="text-xl font-normal text-[#E1E0CC] mb-3">{project.title}</h3>
-
-                <p className="text-xs text-gray-400 font-light leading-relaxed mb-6">
-                  {project.description}
-                </p>
-
-                {project.details && (
-                  <div className="space-y-2.5 mb-6 border-t border-white/5 pt-4">
-                    {project.details.map((detail, idx) => (
-                      <div key={idx} className="flex items-start gap-2.5">
-                        <Check className="w-3.5 h-3.5 text-primary/60 shrink-0 mt-0.5" />
-                        <span className="text-[11px] text-gray-400 font-light leading-normal">
-                          {detail}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className="pt-4 border-t border-white/5 flex flex-wrap gap-1.5">
-                {project.techStack.map((tech) => (
-                  <span
-                    key={tech}
-                    className="text-[9px] font-mono text-gray-500 bg-zinc-950 px-2 py-0.5 rounded border border-white/5"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
+            <ProjectCard key={project.id} project={project} />
           ))}
       </motion.div>
     </section>

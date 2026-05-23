@@ -12,6 +12,7 @@ export interface ProjectItem {
   githubLink?: string;
   demoLink?: string;
   details?: string[];
+  image?: string;
 }
 
 export interface Achievement {

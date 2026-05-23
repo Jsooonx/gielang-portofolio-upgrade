@@ -2,62 +2,104 @@ import { ProjectItem, Achievement } from "./types";
 
 export const projectsData: ProjectItem[] = [
   {
-    id: "timetable-solver",
-    title: "Timetable Solver",
-    description: "Built a CSP-based timetable scheduler using recursive backtracking with hard constraint validation across teacher availability, room capacity, and session overlap rules.",
-    category: "python",
-    techStack: ["Python", "Constraint Programming", "Algorithms"],
-    githubLink: "https://github.com/Jsooonx/timetable-solver",
+    id: "pulse",
+    title: "Pulse",
+    description: "A full-stack financial tracker featuring NLP spending analysis, automated anomaly detection, and real-time Telegram notifications.",
+    category: "flask-web",
+    techStack: ["Flask", "SQLite", "Supabase", "Anime.js", "Telegram Bot"],
+    githubLink: "https://github.com/Jsooonx/pulse-financialtracker",
+    demoLink: "https://pulse-financialtracker.vercel.app/",
+    image: "/images/pulse.png",
     details: [
-      "Applied MRV-inspired heuristic ordering and a penalty-based scoring engine to rank and select optimal schedules."
+      "Built with Flask, SQLite, and Supabase for secure data storage and multi-currency support.",
+      "Integrated Telegram OAuth and Telegram Bot for convenient expense logging and instant alerts.",
+      "Utilized custom spending pattern forecasting models to predict monthly financial trends."
     ]
   },
   {
-    id: "pathfinding-visualizer",
-    title: "Pathfinding Visualizer",
-    description: "Implemented DFS, BFS, and A* with a Manhattan heuristic for grid-based pathfinding.",
+    id: "timetable-solver",
+    title: "Timetable Solver",
+    description: "A Constraint Satisfaction Problem (CSP) solver that automates complex scheduling and avoids timetable conflicts.",
     category: "python",
-    techStack: ["Python", "Pygame", "Algorithms", "GUI"],
-    githubLink: "https://github.com/Jsooonx/pathfinding-algorithm-visualizer-python",
+    techStack: ["Python", "Backtracking", "Constraint Programming", "Heuristics"],
+    githubLink: "https://github.com/Jsooonx/timetable-solver",
+    image: "/images/timetable_solver.png",
     details: [
-      "Built a Pygame visualizer to compare algorithm performance across 10+ maze configurations using nodes explored and path optimality."
+      "Implemented recursive backtracking with MRV-inspired (Minimum Remaining Values) heuristic search.",
+      "Ensures 100% conflict-free schedules based on teacher availability, rooms, and group constraints.",
+      "Processed bulk schedule configurations efficiently via custom CSV import pipelines."
     ]
   },
   {
     id: "sudoku-solver",
     title: "Sudoku Solver",
-    description: "Developed a Sudoku solver using recursive backtracking with constraint validation across rows, columns, and 3x3 subgrids.",
+    description: "An optimized Sudoku solver designed to solve hard 9x9 puzzles exponentially faster than brute-force.",
     category: "python",
-    techStack: ["Python", "Backtracking", "Algorithms"],
+    techStack: ["Python", "Algorithms", "Backtracking", "Heuristics"],
     githubLink: "https://github.com/Jsooonx/sudoku-solver-python",
+    image: "/images/sudoku_solver.png",
     details: [
-      "Applied the Minimum Remaining Value (MRV) heuristic to reduce search attempts from ~2,000,000 to ~7,000 on harder puzzles."
+      "Utilized recursive backtracking search with constraint validation.",
+      "Implemented the MRV (Minimum Remaining Value) heuristic to prioritize cell choices.",
+      "Drastically reduced search attempts from ~2,000,000 to ~7,000 on difficult grid layouts."
     ]
   },
   {
-    id: "scholastic-tracker",
-    title: "Scholastic Record Hub",
-    description: "A lightweight full-stack web application designed for scholastic record tracking, student task assignments, and progress monitoring.",
+    id: "pathfinding-visualizer",
+    title: "Pathfinding Visualizer",
+    description: "An interactive grid visualizer comparing the performance and path optimality of different search algorithms.",
+    category: "python",
+    techStack: ["Python", "Algorithms", "Pygame", "Graph Theory"],
+    githubLink: "https://github.com/Jsooonx/pathfinding-algorithm-visualizer-python",
+    image: "/images/pathfinding_visualizer_new.png",
+    details: [
+      "Implemented Depth-First Search (DFS), Breadth-First Search (BFS), and A* Search algorithms.",
+      "Used Manhattan distance heuristic for A* to guarantee shortest path detection.",
+      "Visually compares nodes explored and final path length in a custom GUI grid."
+    ]
+  },
+  {
+    id: "f1-dashboard",
+    title: "F1 2025 Dashboard",
+    description: "A centralized Formula 1 dashboard aggregating live standings, schedules, and race results.",
     category: "flask-web",
-    techStack: ["Flask", "Python", "SQLite", "Tailwind CSS"],
-    githubLink: "https://github.com/Jsooonx",
+    techStack: ["Flask", "REST API", "Data Fetching", "JavaScript"],
+    githubLink: "https://github.com/Jsooonx/f12025-dashboard",
+    demoLink: "https://jsooonx.pythonanywhere.com/",
+    image: "/images/f12025-dashboard.png",
     details: [
-      "RESTful API endpoints for user records and progress management",
-      "Clean user authentication and secure cookie session handling",
-      "Dynamic server-side page rendering with Jinja2 templates"
+      "Aggregated live race statistics and driver standings via the Jolpica F1 API.",
+      "Built dynamic tabbed navigation and responsive layouts with Flask and Vanilla JS.",
+      "Applied team-specific styling and custom color coding for an immersive dashboard feel."
     ]
   },
   {
-    id: "robotics-pid-controller",
-    title: "PID Controller & Sensor System",
-    description: "Microcontroller software designed to drive multi-sensor robotic chassis, including real-time sensor processing and motor velocity controller PID loop.",
-    category: "c-cpp",
-    techStack: ["C++", "C", "Arduino/AVR", "PID Control", "Embedded Systems"],
-    githubLink: "https://github.com/Jsooonx",
+    id: "palette-extractor",
+    title: "Image Palette Extractor",
+    description: "A client-side web application that extracts dominant color palettes from any uploaded image.",
+    category: "flask-web",
+    techStack: ["JavaScript", "DOM Manipulation", "Pixel Processing", "HTML/CSS"],
+    githubLink: "https://github.com/Jsooonx/image-palette-extractor",
+    demoLink: "https://jsooonx.github.io/image-palette-extractor/",
+    image: "/images/palette_extractor_new.png",
     details: [
-      "Optimized PID loops for precise chassis alignment and movement",
-      "Ultrasonic and infrared sensor data polling with noise reduction filters",
-      "Low-latency interrupts handling for encoder tracking"
+      "Performs local, in-browser RGB pixel analysis to avoid server roundtrips.",
+      "Generates highly accurate, cohesive color palettes ranging from 4 to 16 colors.",
+      "Allows instant copying of HEX/RGB color codes via an interactive DOM interface."
+    ]
+  },
+  {
+    id: "tictactoe-engine",
+    title: "Tic Tac Toe Engine",
+    description: "A robust C-based game engine featuring modular game state management and an interactive console interface.",
+    category: "c-cpp",
+    techStack: ["C", "Game Logic", "2D Arrays", "Modular Design"],
+    githubLink: "https://github.com/Jsooonx/tic-tac-toe-c-engine",
+    image: "/images/tictactoe.png",
+    details: [
+      "Built with a modular function architecture and 2D array board state representation.",
+      "Supports both player-vs-player (PvP) and player-vs-computer (PvE) configurations.",
+      "Designed with reusable C logic easily compileable and integrateable into larger games."
     ]
   }
 ];
