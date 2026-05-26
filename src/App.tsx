@@ -1,11 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 import { HeroSection } from "./components/HeroSection";
 import { AboutSection } from "./components/AboutSection";
 import { ProjectsSection } from "./components/ProjectsSection";
 import { AchievementsSection } from "./components/AchievementsSection";
+import { SocialsFanOut } from "./components/SocialsFanOut";
+import { PageTransition, PageTransitionRef } from "./components/PageTransition";
 
 export default function App() {
+  const pageTransitionRef = useRef<PageTransitionRef>(null);
+
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -31,10 +35,19 @@ export default function App() {
           e.preventDefault();
           const target = document.querySelector(href) as HTMLElement | null;
           if (target) {
-            lenis.scrollTo(target, {
-              offset: 0,
-              duration: 2.0,
-            });
+            if (pageTransitionRef.current) {
+              pageTransitionRef.current.trigger(() => {
+                lenis.scrollTo(target, {
+                  offset: 0,
+                  immediate: true, // Jump immediately while screen is covered by transition
+                });
+              });
+            } else {
+              lenis.scrollTo(target, {
+                offset: 0,
+                duration: 2.0,
+              });
+            }
           }
         }
       }
@@ -56,6 +69,8 @@ export default function App() {
       <ProjectsSection />
       <AchievementsSection />
 
+      <SocialsFanOut />
+
       <footer id="inquiries" className="bg-black py-16 px-6 sm:px-12 md:px-24 border-t border-white/5 relative overflow-hidden">
         <div className="absolute inset-0 bg-noise opacity-[0.05] pointer-events-none" />
         
@@ -72,7 +87,7 @@ export default function App() {
               <a href="#story" className="hover:text-primary transition-colors">Story</a>
               <a href="#projects" className="hover:text-primary transition-colors">Projects</a>
               <a href="#achievements" className="hover:text-primary transition-colors">Achievements</a>
-              <a href="mailto:hello@gielang.dev" className="hover:text-primary transition-colors">hello@gielang.dev</a>
+              <a href="mailto:elangacount15@gmail.com" className="hover:text-primary transition-colors">elangacount15@gmail.com</a>
             </div>
             <span className="text-[10px] font-mono text-gray-600 tracking-wider">
               © {new Date().getFullYear()} GIELANG. ALL RIGHTS RESERVED.
@@ -80,6 +95,8 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      <PageTransition ref={pageTransitionRef} />
     </div>
   );
 }

@@ -14,6 +14,36 @@ const navItems: NavItem[] = [
   { label: "Inquiries", href: "#inquiries" },
 ];
 
+const socialLinks = [
+  {
+    label: "GitHub",
+    href: "https://github.com/Jsooonx",
+    icon: <Github className="w-3.5 h-3.5" />,
+  },
+  {
+    label: "LeetCode",
+    href: "https://leetcode.com/u/jsooonx/",
+    icon: (
+      <img 
+        src="https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/1200/external-level-up-your-coding-skills-and-quickly-land-a-job-logo-shadow-tal-revivo.jpg" 
+        alt="LeetCode" 
+        className="w-3.5 h-3.5 object-contain rounded-sm"
+      />
+    ),
+  },
+  {
+    label: "HackerRank",
+    href: "https://www.hackerrank.com/profile/elangacount15",
+    icon: (
+      <img 
+        src="https://cdn.iconscout.com/icon/free/png-256/free-hackerrank-logo-icon-svg-download-png-3030100.png" 
+        alt="HackerRank" 
+        className="w-3.5 h-3.5 object-contain"
+      />
+    ),
+  },
+];
+
 export function HeroSection() {
   const descVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -71,7 +101,7 @@ export function HeroSection() {
 
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/80 pointer-events-none z-10" />
 
-        <nav className="absolute top-0 left-1/2 -translate-x-1/2 z-50 bg-black/95 rounded-b-2xl md:rounded-b-3xl px-6 py-3 md:px-12 flex items-center justify-center gap-4 sm:gap-6 md:gap-10 lg:gap-12 border-x border-b border-white/5 shadow-2xl">
+        <nav className="absolute top-0 left-1/2 -translate-x-1/2 z-50 bg-black/95 rounded-b-2xl md:rounded-b-3xl px-4 py-2.5 sm:px-6 md:px-12 sm:py-3 flex items-center justify-center gap-3.5 sm:gap-6 md:gap-10 lg:gap-12 border-x border-b border-white/5 shadow-2xl w-auto max-w-[95vw] sm:max-w-none">
           {navItems.map((item) => (
             <a
               key={item.label}
@@ -79,7 +109,7 @@ export function HeroSection() {
               style={{ color: "rgba(225, 224, 204, 0.8)" }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "#E1E0CC")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(225, 224, 204, 0.8)")}
-              className="text-[9px] sm:text-[10px] tracking-[0.2em] uppercase font-bold transition-colors"
+              className="text-[8px] xs:text-[9px] sm:text-[10px] tracking-[0.2em] uppercase font-bold transition-colors shrink-0"
             >
               {item.label}
             </a>
@@ -89,7 +119,7 @@ export function HeroSection() {
         <div />
 
         <div className="relative z-20 w-full p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-end items-center">
-          <div className="max-w-7xl mx-auto w-full flex flex-col items-center gap-6 text-center">
+          <div className="max-w-7xl mx-auto w-full flex flex-col items-center gap-5 sm:gap-6 text-center">
             
             <div className="w-full flex justify-center select-none mb-1">
               <WordsPullUp
@@ -99,13 +129,13 @@ export function HeroSection() {
               />
             </div>
 
-            <div className="flex flex-col items-center gap-6 max-w-xl sm:max-w-2xl">
+            <div className="flex flex-col items-center gap-5 sm:gap-6 max-w-xl sm:max-w-2xl">
               
               <motion.p
                 variants={descVariants}
                 initial="hidden"
                 animate="visible"
-                className="text-primary/70 text-xs sm:text-sm md:text-base leading-[1.4] text-center font-light"
+                className="text-primary/70 text-xs sm:text-sm md:text-base leading-[1.4] text-center font-light px-2"
               >
                 Gielang is an aspiring computer science student and full-stack developer. Combining software engineering with hands-on robotics, he builds intelligent systems and interactive web applications.
               </motion.p>
@@ -114,7 +144,7 @@ export function HeroSection() {
                 variants={buttonVariants}
                 initial="hidden"
                 animate="visible"
-                className="w-full flex justify-center"
+                className="w-full flex flex-col items-center gap-4"
               >
                 <a
                   href="#projects"
@@ -125,6 +155,27 @@ export function HeroSection() {
                     <ArrowRight className="w-4 h-4 text-primary" />
                   </div>
                 </a>
+
+                {/* Mobile & Tablet Social Links (Inline in the content flow) */}
+                <motion.div
+                  variants={socialVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="flex lg:hidden items-center justify-center gap-2.5 flex-wrap mt-2 w-full"
+                >
+                  {socialLinks.map((link) => (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center gap-2 px-3.5 py-2 rounded-full border border-white/5 bg-zinc-950/40 text-primary/70 hover:border-primary/30 hover:text-primary transition-all duration-300 font-mono text-[9px] tracking-widest font-semibold uppercase"
+                    >
+                      {link.icon}
+                      <span>{link.label}</span>
+                    </a>
+                  ))}
+                </motion.div>
               </motion.div>
 
             </div>
@@ -132,50 +183,25 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* Profile Links */}
+        {/* Desktop Profile Links (Absolute positioned bottom-left) */}
         <motion.div
           variants={socialVariants}
           initial="hidden"
           animate="visible"
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 lg:left-12 lg:translate-x-0 z-30 flex items-center justify-center lg:justify-start gap-3 flex-wrap w-[calc(100%-3rem)] lg:w-auto"
+          className="hidden lg:flex absolute bottom-6 left-12 z-30 items-center gap-3"
         >
-          <a
-            href="https://github.com/Jsooonx"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-2 px-4 py-2 rounded-full border border-white/5 bg-zinc-950/40 text-primary/70 hover:border-primary/30 hover:text-primary transition-all duration-300 hover:-translate-y-0.5 font-mono text-[9px] tracking-widest font-semibold uppercase"
-          >
-            <Github className="w-3.5 h-3.5" />
-            <span>GitHub</span>
-          </a>
-
-          <a
-            href="https://leetcode.com/u/jsooonx/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-2 px-4 py-2 rounded-full border border-white/5 bg-zinc-950/40 text-primary/70 hover:border-primary/30 hover:text-primary transition-all duration-300 hover:-translate-y-0.5 font-mono text-[9px] tracking-widest font-semibold uppercase"
-          >
-            <img 
-              src="https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/1200/external-level-up-your-coding-skills-and-quickly-land-a-job-logo-shadow-tal-revivo.jpg" 
-              alt="LeetCode" 
-              className="w-3.5 h-3.5 object-contain rounded-sm"
-            />
-            <span>LeetCode</span>
-          </a>
-
-          <a
-            href="https://www.hackerrank.com/profile/elangacount15"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-2 px-4 py-2 rounded-full border border-white/5 bg-zinc-950/40 text-primary/70 hover:border-primary/30 hover:text-primary transition-all duration-300 hover:-translate-y-0.5 font-mono text-[9px] tracking-widest font-semibold uppercase"
-          >
-            <img 
-              src="https://cdn.iconscout.com/icon/free/png-256/free-hackerrank-logo-icon-svg-download-png-3030100.png" 
-              alt="HackerRank" 
-              className="w-3.5 h-3.5 object-contain"
-            />
-            <span>HackerRank</span>
-          </a>
+          {socialLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-2 px-4 py-2 rounded-full border border-white/5 bg-zinc-950/40 text-primary/70 hover:border-primary/30 hover:text-primary transition-all duration-300 hover:-translate-y-0.5 font-mono text-[9px] tracking-widest font-semibold uppercase"
+            >
+              {link.icon}
+              <span>{link.label}</span>
+            </a>
+          ))}
         </motion.div>
 
       </div>
