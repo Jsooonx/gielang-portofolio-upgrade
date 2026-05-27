@@ -7,10 +7,12 @@ import { ProjectsSection } from "./components/ProjectsSection";
 import { AchievementsSection } from "./components/AchievementsSection";
 import { SocialsFanOut } from "./components/SocialsFanOut";
 import { PageTransition, PageTransitionRef } from "./components/PageTransition";
+import { ProjectsArchive } from "./components/ProjectsArchive";
 
 export default function App() {
   const pageTransitionRef = useRef<PageTransitionRef>(null);
   const [isTransitionActive, setIsTransitionActive] = useState(false);
+  const [currentView, setCurrentView] = useState<'main' | 'archive'>('main');
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -81,10 +83,46 @@ export default function App() {
         }}
         className="w-full bg-black origin-center overflow-hidden"
       >
-        <HeroSection />
-        <AboutSection />
-        <ProjectsSection />
-        <AchievementsSection />
+        {currentView === 'main' ? (
+          <>
+            <HeroSection />
+            <AboutSection />
+            <ProjectsSection onViewArchive={() => {
+              if (pageTransitionRef.current) {
+                setIsTransitionActive(true);
+                pageTransitionRef.current.trigger(() => {
+                  setCurrentView('archive');
+                  window.scrollTo(0, 0);
+                }).then(() => {
+                  setIsTransitionActive(false);
+                });
+              } else {
+                setCurrentView('archive');
+                window.scrollTo(0, 0);
+              }
+            }} />
+            <AchievementsSection />
+          </>
+        ) : (
+          <ProjectsArchive onViewMain={() => {
+            if (pageTransitionRef.current) {
+              setIsTransitionActive(true);
+              pageTransitionRef.current.trigger(() => {
+                setCurrentView('main');
+                setTimeout(() => {
+                  const target = document.querySelector("#projects");
+                  if (target) {
+                    target.scrollIntoView({ behavior: "auto" });
+                  }
+                }, 50);
+              }).then(() => {
+                setIsTransitionActive(false);
+              });
+            } else {
+              setCurrentView('main');
+            }
+          }} />
+        )}
 
         <SocialsFanOut />
 

@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
-import { motion, useInView, AnimatePresence } from "motion/react";
-import { Check, Github, ExternalLink, Code, ChevronDown, ChevronUp } from "lucide-react";
+import { motion, useInView, AnimatePresence, useScroll, useTransform } from "motion/react";
+import { Check, Github, ExternalLink, Code, ArrowRight } from "lucide-react";
 import { projectsData } from "../data";
 import { ProjectItem } from "../types";
 import { TitleStaggerReveal } from "./TitleStaggerReveal";
@@ -38,7 +38,7 @@ const childVariants = {
   }
 };
 
-function ProjectCard({ project }: { project: ProjectItem; key?: string }) {
+export function ProjectCard({ project }: { project: ProjectItem; key?: string }) {
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
@@ -161,29 +161,43 @@ function ProjectCard({ project }: { project: ProjectItem; key?: string }) {
   );
 }
 
-export function ProjectsSection() {
-  const [activeFilter, setActiveFilter] = useState<'all' | 'python' | 'flask-web' | 'c-cpp'>('all');
-  const [showArchived, setShowArchived] = useState(false);
+export function ProjectsSection({ onViewArchive }: { onViewArchive: () => void }) {
+  const [activeFilter, setActiveFilter] = useState<'python' | 'flask-web' | 'c-cpp'>('python');
   const headerRef = useRef<HTMLDivElement>(null);
   const headerInView = useInView(headerRef, { once: true, margin: "-80px" });
 
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["end end", "end start"],
+  });
+
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.94]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.3]);
+
   const filterOptions = [
-    { label: "All Projects", value: "all" as const },
     { label: "Python & Algorithms", value: "python" as const },
     { label: "Flask & Web", value: "flask-web" as const },
     { label: "C / C++ & Systems", value: "c-cpp" as const },
   ];
 
   const filteredProjects = projectsData.filter(
-    (project) => activeFilter === 'all' || project.category === activeFilter
+    (project) => project.category === activeFilter
   );
   
-  const featuredProjects = filteredProjects.filter((p) => p.featured);
-  const archivedProjects = filteredProjects.filter((p) => !p.featured);
+  const displayedProjects = filteredProjects.slice(0, 6);
 
   return (
-    <section
+    <motion.section
       id="projects"
+      ref={sectionRef}
+      style={{
+        scale,
+        y,
+        opacity,
+        transformOrigin: "center top",
+      }}
       className="relative bg-black rounded-t-[8vw] md:rounded-t-[4vw] -mt-[8vw] md:-mt-[4vw] pt-[calc(8vw+4rem)] md:pt-[calc(4vw+6rem)] pb-24 px-4 sm:px-6 md:px-12 lg:px-24 overflow-hidden z-20 shadow-[0_-30px_60px_rgba(0,0,0,0.8)]"
     >
       <div className="absolute inset-0 bg-noise opacity-[0.15] pointer-events-none" />
@@ -227,74 +241,20 @@ export function ProjectsSection() {
       <motion.div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto w-full relative z-10"
       >
-        {activeFilter === 'all' && (
-          <motion.div
-            key="decorative-video"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="relative h-[450px] rounded-2xl overflow-hidden group/video border border-white/5 bg-zinc-950"
-          >
-            <video
-              src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260406_133058_0504132a-0cf3-4450-a370-8ea3b05c95d4.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover group-hover/video:scale-105 transition-transform duration-1000"
-            />
-            <div className="absolute inset-0 noise-overlay opacity-[0.5] mix-blend-overlay pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-black/35 pointer-events-none" />
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-              <Code className="w-8 h-8 text-primary mb-3" />
-              <h3 className="text-xl font-serif italic text-primary mb-2">Code in Motion.</h3>
-              <p className="text-gray-400 font-light text-xs leading-relaxed max-w-[200px]">
-                Writing high-performance logic to build applications, optimize searches, and coordinate automated systems.
-              </p>
-            </div>
-          </motion.div>
-        )}
-
-        {featuredProjects.map((project) => (
+        {displayedProjects.map((project) => (
           <ProjectCard key={project.id} project={project} />
         ))}
       </motion.div>
 
-      <AnimatePresence initial={false}>
-        {showArchived && archivedProjects.length > 0 && (
-          <motion.div
-            key="archived-projects-container"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="overflow-hidden w-full relative z-10"
-          >
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto w-full mt-6">
-              {archivedProjects.map((project) => (
-                <ProjectCard key={project.id} project={project} />
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {archivedProjects.length > 0 && (
-        <div className="flex justify-center mt-12 relative z-20">
-          <button
-            onClick={() => setShowArchived(!showArchived)}
-            className="flex items-center gap-2 px-6 py-3 text-xs uppercase tracking-wider font-semibold rounded-full border border-white/10 text-primary/70 hover:border-white/30 hover:text-primary bg-zinc-950/40 transition-all duration-200 cursor-pointer"
-          >
-            {showArchived ? "Show Less" : "Show More Projects"}
-            {showArchived ? (
-              <ChevronUp className="w-4 h-4 transition-transform duration-200" />
-            ) : (
-              <ChevronDown className="w-4 h-4 transition-transform duration-200" />
-            )}
-          </button>
-        </div>
-      )}
-    </section>
+      <div className="flex justify-center mt-12 relative z-20">
+        <button
+          onClick={onViewArchive}
+          className="group flex items-center gap-2.5 px-8 py-3.5 text-xs uppercase tracking-wider font-semibold rounded-full border border-primary/20 text-primary hover:border-primary/60 hover:text-white bg-zinc-950/40 transition-all duration-300 cursor-pointer shadow-lg shadow-black/30"
+        >
+          <span>Explore Full Archive</span>
+          <ArrowRight className="w-4 h-4 text-primary group-hover:translate-x-1 transition-transform" />
+        </button>
+      </div>
+    </motion.section>
   );
 }
