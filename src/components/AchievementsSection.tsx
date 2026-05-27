@@ -69,7 +69,7 @@ export function AchievementsSection() {
           transform: "translate3d(0, 0, 0)",
           willChange: "opacity, transform",
         }}
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none z-0 opacity-30 mix-blend-lighten"
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none z-0 opacity-20"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-[#161616] via-transparent to-[#161616] z-0 pointer-events-none" />
       <div className="absolute inset-0 bg-[#161616]/70 z-0 pointer-events-none" />

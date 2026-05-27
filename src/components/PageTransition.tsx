@@ -113,7 +113,7 @@ export const PageTransition = forwardRef<PageTransitionRef, {}>((_, ref) => {
             animate="animate"
             className="flex flex-col items-center gap-2 text-black select-none"
           >
-            <span className="font-serif italic text-6xl tracking-wide">Gielang*</span>
+            <span className="font-serif italic text-6xl tracking-wide">Gielang</span>
             <span className="font-mono text-[10px] tracking-[0.3em] uppercase font-bold opacity-60">
               Loading Experience
             </span>

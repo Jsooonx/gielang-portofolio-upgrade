@@ -211,7 +211,6 @@ export function HeroSection() {
             <div className="w-full flex justify-center select-none mb-1">
               <WordsPullUp
                 text="Gielang"
-                showAsterisk
                 className="font-medium text-[20vw] sm:text-[18vw] md:text-[16vw] lg:text-[14vw] xl:text-[13vw] 2xl:text-[12vw] leading-[0.85] tracking-[-0.07em] text-[#E1E0CC] uppercase"
               />
             </div>

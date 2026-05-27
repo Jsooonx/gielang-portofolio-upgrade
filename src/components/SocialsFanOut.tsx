@@ -79,7 +79,7 @@ export function SocialsFanOut() {
     },
     {
       id: "portrait",
-      title: "Gielang*",
+      title: "Gielang",
       subtitle: "CS Builder",
       url: "#story",
       bgClass: "bg-black",

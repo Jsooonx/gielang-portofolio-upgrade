@@ -30,15 +30,9 @@ html.lenis, html.lenis body {
   pointer-events: none;
 }
 
-.noise-overlay {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='512' height='512'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  background-size: 512px 512px;
-  background-repeat: repeat;
-}
-
-.bg-noise {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='512' height='512'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  background-size: 512px 512px;
+.noise-overlay, .bg-noise {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAuka58AAAABlBMVEUAAAD///+l2Z/dAAAAnUlEQVRIx+2VwQ7AIAhDF///o9scc86x2a4e1hCQAi1gpjT/kF0gBwQ0r9h4I4KqCkgtIAnIDiAlqCwgR0CikCxAvB8QJsgWkGsk+qP02b0cIG2CrAExE9G/wG5mX80+3c4B/A2yD0Qe8R0Qd8R3QOQRb0D4A/gDiG3+P/k5Wv4N+Hh/G/QfX4B4P4BwP4BwP4BwP4Bw/3EPLxIBAwEBAwEBAwEBAwEB+RcA7w0E9/w/AAAAAElFTkSuQmCC");
+  background-size: 60px 60px;
   background-repeat: repeat;
 }
 

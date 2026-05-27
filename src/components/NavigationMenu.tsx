@@ -354,7 +354,7 @@ export function NavigationMenu({ currentView, activeSection, onNavigate }: Navig
                 className="mt-16 sm:mt-24 pt-8 border-t border-white/5 flex flex-col gap-4 font-mono text-[10px] tracking-widest text-gray-500 uppercase"
               >
                 <div className="flex flex-col gap-1">
-                  <span className="text-primary font-bold">Gielang* Portfolio</span>
+                  <span className="text-primary font-bold">Gielang Portfolio</span>
                   <span>Computer Science & Software Development</span>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-2">

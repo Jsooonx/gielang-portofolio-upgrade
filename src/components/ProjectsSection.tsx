@@ -172,9 +172,12 @@ export function ProjectsSection({ onViewArchive }: { onViewArchive: () => void }
     offset: ["end end", "end start"],
   });
 
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.94]);
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.3]);
+  const scale = useTransform(scrollYProgress, [0, 0.1, 1], [1, 1, 0.9]);
+  const y = useTransform(scrollYProgress, [0, 0.1, 1], ["0vh", "0vh", "15vh"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.15, 0.9], [1, 1, 0]);
+  const blurValue = useTransform(scrollYProgress, [0, 0.15, 0.85], [0, 0, 16]);
+  const filter = useTransform(blurValue, (v) => v === 0 ? "none" : `blur(${v}px)`);
+  const borderRadius = useTransform(scrollYProgress, [0, 0.1, 1], ["2rem", "2rem", "4rem"]);
 
   const filterOptions = [
     { label: "Python & Algorithms", value: "python" as const },
@@ -196,7 +199,13 @@ export function ProjectsSection({ onViewArchive }: { onViewArchive: () => void }
         scale,
         y,
         opacity,
+        filter,
+        borderRadius,
         transformOrigin: "center top",
+        transformStyle: "preserve-3d",
+        backfaceVisibility: "hidden",
+        WebkitBackfaceVisibility: "hidden",
+        willChange: "transform, filter",
       }}
       className="relative bg-black rounded-t-[8vw] md:rounded-t-[4vw] -mt-[8vw] md:-mt-[4vw] pt-[calc(8vw+4rem)] md:pt-[calc(4vw+6rem)] pb-24 px-4 sm:px-6 md:px-12 lg:px-24 overflow-hidden z-20 shadow-[0_-30px_60px_rgba(0,0,0,0.8)]"
     >

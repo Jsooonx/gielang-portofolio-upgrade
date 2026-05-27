@@ -9,12 +9,15 @@ import { SocialsFanOut } from "./components/SocialsFanOut";
 import { PageTransition, PageTransitionRef } from "./components/PageTransition";
 import { ProjectsArchive } from "./components/ProjectsArchive";
 import { NavigationMenu } from "./components/NavigationMenu";
+import { FooterSection } from "./components/FooterSection";
+import { InitialPreloader } from "./components/InitialPreloader";
 
 export default function App() {
   const pageTransitionRef = useRef<PageTransitionRef>(null);
   const [isTransitionActive, setIsTransitionActive] = useState(false);
   const [currentView, setCurrentView] = useState<'main' | 'archive'>('main');
   const [activeSection, setActiveSection] = useState<string>("#story");
+  const [isPreloaded, setIsPreloaded] = useState(false);
 
   const handleNavigation = (targetId: string) => {
     if (targetId.startsWith("#")) {
@@ -189,34 +192,12 @@ export default function App() {
 
         <SocialsFanOut />
 
-        <footer id="inquiries" className="bg-black py-16 px-6 sm:px-12 md:px-24 border-t border-white/5 relative overflow-hidden">
-          <div className="absolute inset-0 bg-noise opacity-[0.05] pointer-events-none" />
-          
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 relative z-10 text-center md:text-left">
-            <div className="flex flex-col gap-2">
-              <span className="font-serif italic text-2xl text-primary tracking-wide">Gielang*</span>
-              <p className="text-xs text-gray-500 font-light max-w-xs sm:max-w-sm">
-                Aspiring Computer Science student and full-stack software programmer preparing for higher education abroad.
-              </p>
-            </div>
-
-            <div className="flex flex-col md:items-end gap-2">
-              <div className="flex items-center gap-6 text-xs text-gray-400 font-medium">
-                <a href="#story" className="hover:text-primary transition-colors">Story</a>
-                <a href="#projects" className="hover:text-primary transition-colors">Projects</a>
-                <a href="#achievements" className="hover:text-primary transition-colors">Achievements</a>
-                <a href="mailto:elangacount15@gmail.com" className="hover:text-primary transition-colors">elangacount15@gmail.com</a>
-              </div>
-              <span className="text-[10px] font-mono text-gray-600 tracking-wider">
-                © {new Date().getFullYear()} GIELANG. ALL RIGHTS RESERVED.
-              </span>
-            </div>
-          </div>
-        </footer>
+        <FooterSection onNavigate={handleNavigation} />
       </div>
 
       <PageTransition ref={pageTransitionRef} />
       <NavigationMenu currentView={currentView} activeSection={activeSection} onNavigate={handleNavigation} />
+      {!isPreloaded && <InitialPreloader onComplete={() => setIsPreloaded(true)} />}
     </div>
   );
 }
