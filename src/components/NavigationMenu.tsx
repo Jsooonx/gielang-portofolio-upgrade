@@ -346,7 +346,7 @@ export function NavigationMenu({ currentView, activeSection, onNavigate }: Navig
               >
                 <div className="flex flex-col gap-1">
                   <span className="text-primary font-bold">Gielang Portfolio</span>
-                  <span>Computer Science & Software Development</span>
+                  <span>Computer Science & Software Development Enthusiast</span>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-2">
                   <span>Inquiries: elangacount15@gmail.com</span>
