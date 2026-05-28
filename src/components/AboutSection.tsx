@@ -30,8 +30,38 @@ export function AboutSection() {
           <WordsPullUpMultiStyle segments={aboutSegments} />
         </div>
 
-        <div className="max-w-2xl mx-auto border-t border-white/10 pt-10 sm:pt-12 w-full">
+        <div className="max-w-2xl mx-auto border-t border-white/10 pt-10 sm:pt-12 w-full flex flex-col items-center">
           <AboutTextReveal text={bodyText} className="text-primary/90 leading-relaxed font-light" />
+          
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-5 mt-10">
+            {[
+              { name: "Python", src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" },
+              { name: "C", src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg" },
+              { name: "C++", src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" },
+              { name: "HTML5", src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" },
+              { name: "CSS3", src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" },
+              { name: "JavaScript", src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" },
+              { name: "Tailwind CSS", src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" },
+              { name: "React", src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
+              { name: "TypeScript", src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" },
+              { name: "Flask", src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flask/flask-original.svg", className: "invert opacity-80" },
+              { name: "SQL", src: "https://www.svgrepo.com/show/331760/sql-database-generic.svg" }
+            ].map((tech) => (
+              <div 
+                key={tech.name} 
+                className="group relative flex items-center justify-center bg-zinc-900/40 hover:bg-zinc-800/80 border border-white/5 hover:border-primary/20 w-12 h-12 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(222,219,200,0.05)] cursor-pointer"
+              >
+                <img 
+                  src={tech.src} 
+                  alt={tech.name} 
+                  className={`w-6 h-6 transition-all duration-300 filter grayscale group-hover:grayscale-0 group-hover:scale-110 ${tech.className || ""}`}
+                />
+                <span className="absolute -bottom-8 scale-0 group-hover:scale-100 transition-all duration-200 bg-zinc-950 text-primary text-[10px] uppercase tracking-wider py-1 px-2 rounded-md border border-white/10 whitespace-nowrap pointer-events-none z-30 shadow-lg">
+                  {tech.name}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
