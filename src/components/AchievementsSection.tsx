@@ -62,9 +62,15 @@ export function AchievementsSection() {
     progressMotion.set(progress);
   }, [progress]);
 
+  const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
     setWindowHeight(window.innerHeight);
-    const handleResize = () => setWindowHeight(window.innerHeight);
+    setIsMobile(window.innerWidth < 768);
+    const handleResize = () => {
+      setWindowHeight(window.innerHeight);
+      setIsMobile(window.innerWidth < 768);
+    };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -229,7 +235,7 @@ export function AchievementsSection() {
   });
 
   const headerY = useTransform(smoothProgress, [0, 0.15], ["18vh", "0vh"]);
-  const headerScale = useTransform(smoothProgress, [0, 0.15], [1.05, 0.85]);
+  const headerScale = useTransform(smoothProgress, [0, 0.15], [1.05, isMobile ? 0.65 : 0.85]);
   const headerDescOpacity = 1;
 
   const startCardsOffset = windowHeight - Math.min(580, windowHeight * 0.72);
@@ -292,16 +298,16 @@ export function AchievementsSection() {
             variants={containerVariants}
             initial="hidden"
             animate={headerInView ? "visible" : "hidden"}
-            className="bg-[#101010] rounded-2xl border border-white/5 flex flex-col items-center justify-center py-8 sm:py-10 px-8 text-center select-none shadow-xl shadow-black/40"
+            className="bg-[#101010] rounded-2xl border border-white/5 flex flex-col items-center justify-center py-5 sm:py-8 px-4 sm:px-8 text-center select-none shadow-xl shadow-black/40"
           >
             <TitleStaggerReveal
               text="Achievements & Activities."
-              className="font-serif italic text-4xl sm:text-5xl md:text-6xl text-primary tracking-wide mb-2"
+              className="font-serif italic text-2xl sm:text-5xl md:text-6xl text-primary tracking-wide mb-1"
             />
             <motion.p
               variants={childVariants}
               style={{ opacity: headerDescOpacity }}
-              className="text-gray-500 font-light text-sm sm:text-base max-w-lg"
+              className="text-gray-500 font-light text-xs sm:text-base max-w-lg mt-1"
             >
               Milestones from robotics championships to education and certifications.
             </motion.p>
@@ -429,7 +435,7 @@ export function AchievementsSection() {
                       <div className="w-[1px] flex-grow bg-white/[0.08] mt-3" />
                     </div>
 
-                    <div className="flex-grow pb-14 lg:col-start-3 lg:row-start-2 lg:flex lg:items-center">
+                    <div className="flex-grow pb-8 sm:pb-14 lg:col-start-3 lg:row-start-2 lg:flex lg:items-center">
                       <div className="w-full">
                         <div className="lg:hidden mt-1">
                           <p className="font-serif italic text-2xl text-primary leading-none">{item.year}</p>
@@ -439,7 +445,7 @@ export function AchievementsSection() {
                         </div>
 
                         <div className="flex flex-col lg:flex-row lg:items-center lg:gap-3 xl:gap-4 2xl:gap-6 w-full mt-2 lg:mt-0">
-                          <div className="bg-[#101010] rounded-2xl border border-white/5 p-6 sm:p-8 hover:border-primary/20 transition-colors duration-300 w-full lg:w-[320px] xl:w-[380px] 2xl:w-[420px] lg:shrink-0 relative z-10">
+                          <div className="bg-[#101010] rounded-2xl border border-white/5 p-4 sm:p-8 hover:border-primary/20 transition-colors duration-300 w-full lg:w-[320px] xl:w-[380px] 2xl:w-[420px] lg:shrink-0 relative z-10">
                             <h4 className="text-base sm:text-lg font-normal text-[#E1E0CC] mb-2">{item.title}</h4>
                             <p className="text-xs text-gray-400 font-light leading-relaxed mb-5">{item.description}</p>
                             
