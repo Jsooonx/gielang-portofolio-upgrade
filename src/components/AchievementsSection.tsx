@@ -1,5 +1,5 @@
-import { useRef, useEffect, useState } from "react";
-import { motion, useInView, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring } from "motion/react";
+import { useRef } from "react";
+import { motion, useInView } from "motion/react";
 import { Trophy, Sparkles, Pin, GraduationCap, ArrowLeft, ArrowRight } from "lucide-react";
 import { achievementsData } from "../data";
 import { TitleStaggerReveal } from "./TitleStaggerReveal";
@@ -39,235 +39,19 @@ const childVariants = {
 
 // Timeline section displaying achievements, educational history, and activities
 export function AchievementsSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-
-  const [windowHeight, setWindowHeight] = useState(800);
-  const [cardsHeight, setCardsHeight] = useState(1500);
-
-  const [isLocked, setIsLocked] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const progressMotion = useMotionValue(0);
-  const tempDisableLock = useRef(false);
-  const lockCooldown = useRef<'top' | 'bottom' | null>(null);
-  const prevScrollY = useRef(0);
-
-  useEffect(() => {
-    prevScrollY.current = window.scrollY;
-  }, []);
-
-  // Sync motion value with progress state
-  useEffect(() => {
-    progressMotion.set(progress);
-  }, [progress]);
-
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    setWindowHeight(window.innerHeight);
-    setIsMobile(window.innerWidth < 768);
-    const handleResize = () => {
-      setWindowHeight(window.innerHeight);
-      setIsMobile(window.innerWidth < 768);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  useEffect(() => {
-    if (cardsRef.current) {
-      const resizeObserver = new ResizeObserver((entries) => {
-        for (let entry of entries) {
-          setCardsHeight(entry.contentRect.height);
-        }
-      });
-      resizeObserver.observe(cardsRef.current);
-      return () => resizeObserver.disconnect();
-    }
-  }, []);
-
-  // Intercept links click to temporarily disable scroll lock
-  useEffect(() => {
-    const handleAnchorClick = () => {
-      setIsLocked(false);
-      tempDisableLock.current = true;
-      setTimeout(() => {
-        tempDisableLock.current = false;
-      }, 1500);
-    };
-
-    document.addEventListener("click", handleAnchorClick);
-    return () => document.removeEventListener("click", handleAnchorClick);
-  }, []);
-
-  // Control Lenis instance scroll stop/start
-  useEffect(() => {
-    const lenis = (window as any).lenis;
-    if (lenis) {
-      if (isLocked) {
-        lenis.stop();
-      } else {
-        lenis.start();
-      }
-    }
-    return () => {
-      if (lenis) lenis.start();
-    };
-  }, [isLocked]);
-
-  // Trigger locks on entering from top or bottom (blink-free crossing check)
-  useEffect(() => {
-    const handleLockTrigger = () => {
-      if (!containerRef.current || isLocked || tempDisableLock.current) {
-        prevScrollY.current = window.scrollY;
-        return;
-      }
-      const offsetTop = containerRef.current.offsetTop;
-      const currentScrollY = window.scrollY;
-      const lenis = (window as any).lenis;
-
-      // Clear cooldowns if we move far enough away from the boundaries
-      if (lockCooldown.current === 'top' && currentScrollY < offsetTop - 50) {
-        lockCooldown.current = null;
-      }
-      if (lockCooldown.current === 'bottom' && currentScrollY > offsetTop + 50) {
-        lockCooldown.current = null;
-      }
-
-      // If we have an active cooldown, do not trigger the lock
-      if (lockCooldown.current) {
-        prevScrollY.current = currentScrollY;
-        return;
-      }
-
-      // Detect boundary crossing:
-      const crossedFromTop = prevScrollY.current < offsetTop && currentScrollY >= offsetTop;
-      const crossedFromBottom = prevScrollY.current > offsetTop && currentScrollY <= offsetTop;
-
-      if (crossedFromTop || crossedFromBottom) {
-        if (lenis) {
-          lenis.scrollTo(offsetTop, { immediate: true });
-        } else {
-          window.scrollTo(0, offsetTop);
-        }
-
-        if (crossedFromTop) {
-          setProgress(0);
-          progressMotion.jump(0);
-          smoothProgress.jump(0);
-        } else if (crossedFromBottom) {
-          setProgress(1);
-          progressMotion.jump(1);
-          smoothProgress.jump(1);
-        }
-
-        setIsLocked(true);
-      }
-
-      prevScrollY.current = currentScrollY;
-    };
-
-    window.addEventListener("scroll", handleLockTrigger);
-    return () => window.removeEventListener("scroll", handleLockTrigger);
-  }, [isLocked]);
-
-  // Handle gestures and wheel scroll updating progress state
-  useEffect(() => {
-    if (!isLocked) return;
-
-    const handleWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      const delta = e.deltaY * 0.0006; // Adjust scroll sensitivity
-      setProgress((prev) => {
-        const next = Math.max(0, Math.min(1, prev + delta));
-        if (prev === 1 && e.deltaY > 0) {
-          lockCooldown.current = 'bottom';
-          setIsLocked(false);
-        } else if (prev === 0 && e.deltaY < 0) {
-          lockCooldown.current = 'top';
-          setIsLocked(false);
-        }
-        return next;
-      });
-    };
-
-    let touchStartY = 0;
-    const handleTouchStart = (e: TouchEvent) => {
-      touchStartY = e.touches[0].clientY;
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      e.preventDefault();
-      const currentY = e.touches[0].clientY;
-      const deltaY = touchStartY - currentY;
-      const delta = deltaY * 0.0015; // Adjust touch sensitivity
-      setProgress((prev) => {
-        const next = Math.max(0, Math.min(1, prev + delta));
-        if (prev === 1 && deltaY > 0) {
-          lockCooldown.current = 'bottom';
-          setIsLocked(false);
-        } else if (prev === 0 && deltaY < 0) {
-          lockCooldown.current = 'top';
-          setIsLocked(false);
-        }
-        return next;
-      });
-      touchStartY = currentY;
-    };
-
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    window.addEventListener("touchstart", handleTouchStart);
-    window.addEventListener("touchmove", handleTouchMove, { passive: false });
-
-    return () => {
-      window.removeEventListener("wheel", handleWheel);
-      window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchmove", handleTouchMove);
-    };
-  }, [isLocked]);
-
-  // Create a spring-animated smooth progress that follows progressMotion
-  const smoothProgress = useSpring(progressMotion, {
-    damping: 30,
-    stiffness: 120,
-    mass: 0.8,
-  });
-
-  const headerY = useTransform(smoothProgress, [0, 0.15], ["18vh", "0vh"]);
-  const headerScale = useTransform(smoothProgress, [0, 0.15], [1.05, isMobile ? 0.65 : 0.85]);
-  const headerDescOpacity = 1;
-
-  const startCardsOffset = windowHeight - Math.min(580, windowHeight * 0.72);
-
-  // Adjust scroll velocity so scrolling feels natural:
-  // Starts showing the first card (CS50), scrolls cards up, and moves the last card completely offscreen.
-  const cardsY = useTransform(
-    smoothProgress,
-    [0, 0.8, 1],
-    [
-      startCardsOffset, 
-      -cardsHeight + windowHeight - 240, 
-      -cardsHeight - 100
-    ]
-  );
-
   const headerInView = useInView(headerRef, { once: true, margin: "-80px" });
 
   const visibleItems = achievementsData;
   const visibleItemsWithImages = visibleItems.filter((item) => item.image);
 
-  const trackHeight = windowHeight;
-
   return (
     <div 
-      ref={containerRef}
-      style={{ height: `${trackHeight}px` }}
       className="relative bg-[#161616] rounded-t-[8vw] md:rounded-t-[4vw] -mt-[8vw] md:-mt-[4vw] shadow-[0_-30px_60px_rgba(0,0,0,0.8)] z-30"
     >
       <section 
         id="achievements" 
-        className="sticky top-0 h-screen w-full overflow-hidden flex flex-col pt-[calc(2vw+2rem)] md:pt-[calc(2vw+3rem)] pb-8 px-4 sm:px-6 md:px-12 lg:px-24"
+        className="relative w-full flex flex-col pt-[calc(8vw+2rem)] md:pt-[calc(4vw+3rem)] pb-24 px-4 sm:px-6 md:px-12 lg:px-24 overflow-hidden"
       >
         <video
           src="/achievements_bg.mp4"
@@ -286,13 +70,9 @@ export function AchievementsSection() {
         <div className="absolute top-1/3 left-1/4 w-[600px] h-[600px] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(circle,rgba(222,219,200,0.05)_0%,transparent_70%)] pointer-events-none z-0" />
         <div className="absolute bottom-1/3 right-1/4 w-[600px] h-[600px] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(circle,rgba(222,219,200,0.05)_0%,transparent_70%)] pointer-events-none z-0" />
 
-        {/* Top fade overlay to mask scrolling cards */}
-        <div className="absolute top-0 left-0 right-0 h-44 bg-gradient-to-b from-[#161616] via-[#161616]/95 to-transparent z-[15] pointer-events-none" />
-
         <motion.div 
           ref={headerRef} 
-          style={{ y: headerY, scale: headerScale }}
-          className="max-w-4xl mx-auto mb-6 relative z-20 w-full will-change-transform"
+          className="max-w-4xl mx-auto mb-16 relative z-20 w-full"
         >
           <motion.div
             variants={containerVariants}
@@ -306,7 +86,6 @@ export function AchievementsSection() {
             />
             <motion.p
               variants={childVariants}
-              style={{ opacity: headerDescOpacity }}
               className="text-gray-500 font-light text-xs sm:text-base max-w-lg mt-1"
             >
               Milestones from robotics championships to education and certifications.
@@ -314,13 +93,10 @@ export function AchievementsSection() {
           </motion.div>
         </motion.div>
 
-        <motion.div 
-          ref={cardsRef}
-          style={{ y: cardsY }}
-          className="max-w-2xl lg:max-w-[860px] xl:max-w-[1060px] 2xl:max-w-6xl mx-auto relative z-10 px-0 lg:px-8 will-change-transform pb-24"
+        <div 
+          className="max-w-2xl lg:max-w-[860px] xl:max-w-[1060px] 2xl:max-w-6xl mx-auto relative z-10 px-0 lg:px-8"
         >
           <div className="space-y-0">
-            <AnimatePresence initial={false}>
             {visibleItems.map((item) => {
               const hasImage = !!item.image;
               const imageIndex = hasImage ? visibleItemsWithImages.findIndex(x => x.id === item.id) : -1;
@@ -330,10 +106,10 @@ export function AchievementsSection() {
               return (
                 <motion.div
                   key={item.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                   className="overflow-hidden"
                 >
                   <div className="relative flex flex-col lg:grid lg:grid-cols-[150px_80px_1fr] xl:grid-cols-[200px_100px_1fr] 2xl:grid-cols-[240px_120px_1fr] gap-0 group/item">
@@ -511,10 +287,9 @@ export function AchievementsSection() {
                 </motion.div>
               );
             })}
-          </AnimatePresence>
+          </div>
         </div>
-      </motion.div>
-    </section>
-  </div>
+      </section>
+    </div>
   );
 }

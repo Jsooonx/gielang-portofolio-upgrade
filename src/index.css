@@ -24,6 +24,7 @@ html.lenis, html.lenis body {
 
 .lenis.lenis-stopped {
   overflow: hidden;
+  overflow-y: scroll;
 }
 
 .lenis.lenis-scrolling iframe {
