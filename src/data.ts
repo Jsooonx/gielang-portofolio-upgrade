@@ -2,6 +2,22 @@ import { ProjectItem, Achievement } from "./types";
 
 export const projectsData: ProjectItem[] = [
   {
+    id: "photo-toolkit",
+    title: "PhotoToolkit",
+    description: "An all-in-one, 100% client-side image editor that processes photos locally in the browser to ensure absolute privacy.",
+    category: "website-webapp",
+    techStack: ["React", "TypeScript", "MediaPipe AI", "Canvas API", "Client-Side", "Tailwind CSS"],
+    githubLink: "https://github.com/Jsooonx/photo-toolkit-webapp",
+    demoLink: "https://photo-toolkit.vercel.app/",
+    image: "/images/photo-toolkit.png",
+    featured: true,
+    details: [
+      "Built 100% client-side processors using Canvas API for image resizing, format conversion (JPG/PNG/WebP), and smart file compression.",
+      "Integrated MediaPipe Selfie Segmentation AI running locally on the user's browser for instant automatic background removal.",
+      "Implemented an interactive manual mask editor (erase, restore, history undo, brush sizing, and zoom) to refine AI boundaries with pixel precision."
+    ]
+  },
+  {
     id: "pulse",
     title: "Pulse",
     description: "A full-stack financial tracker featuring NLP spending analysis, automated anomaly detection, and real-time Telegram notifications.",
@@ -82,7 +98,7 @@ export const projectsData: ProjectItem[] = [
     id: "palette-extractor",
     title: "Image Palette Extractor",
     description: "A client-side web application that extracts dominant color palettes from any uploaded image.",
-    category: "flask-web",
+    category: "website-webapp",
     techStack: ["JavaScript", "DOM Manipulation", "Pixel Processing", "HTML/CSS"],
     githubLink: "https://github.com/Jsooonx/image-palette-extractor",
     demoLink: "https://jsooonx.github.io/image-palette-extractor/",
@@ -144,7 +160,7 @@ export const projectsData: ProjectItem[] = [
     id: "city-weather-app",
     title: "City Weather App",
     description: "A minimal, ad-free weather dashboard displaying real-time atmospheric data with clean, fast search.",
-    category: "flask-web",
+    category: "website-webapp",
     techStack: ["JavaScript", "REST API", "HTML/CSS", "OpenWeatherMap"],
     githubLink: "https://github.com/Jsooonx/city-weather-webapp",
     demoLink: "https://jsooonx.github.io/city-weather-webapp/",

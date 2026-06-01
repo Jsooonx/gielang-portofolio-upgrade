@@ -11,12 +11,13 @@ interface ProjectsArchiveProps {
 
 // Complete archive view of all projects
 export function ProjectsArchive({ onViewMain }: ProjectsArchiveProps) {
-  const [activeFilter, setActiveFilter] = useState<'all' | 'python' | 'flask-web' | 'c-cpp'>('all');
+  const [activeFilter, setActiveFilter] = useState<'all' | 'python' | 'flask-web' | 'c-cpp' | 'website-webapp'>('all');
 
   const filterOptions = [
     { label: "All Projects", value: "all" as const },
     { label: "Python & Algorithms", value: "python" as const },
     { label: "Flask & Web", value: "flask-web" as const },
+    { label: "Website / Webapp", value: "website-webapp" as const },
     { label: "C / C++ & Systems", value: "c-cpp" as const },
   ];
 

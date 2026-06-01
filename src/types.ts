@@ -7,7 +7,7 @@ export interface ProjectItem {
   id: string;
   title: string;
   description: string;
-  category: 'python' | 'flask-web' | 'c-cpp';
+  category: 'python' | 'flask-web' | 'c-cpp' | 'website-webapp';
   techStack: string[];
   githubLink?: string;
   demoLink?: string;

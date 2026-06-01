@@ -64,6 +64,8 @@ export function ProjectCard({ project }: { project: ProjectItem; key?: string })
                 ? 'Python'
                 : project.category === 'flask-web'
                 ? 'Flask / Web'
+                : project.category === 'website-webapp'
+                ? 'Website / Webapp'
                 : 'C / C++'}
             </span>
             <span className="text-[9px] font-mono text-gray-500 uppercase tracking-widest group-hover:text-primary transition-colors">
@@ -133,7 +135,12 @@ export function ProjectCard({ project }: { project: ProjectItem; key?: string })
             </p>
 
             {project.details && (
-              <div className="space-y-2.5 mb-5 border-t border-white/5 pt-4 overflow-y-auto max-h-[140px] pr-1">
+              <div 
+                data-lenis-prevent
+                onWheel={(e) => e.stopPropagation()}
+                onClick={(e) => e.stopPropagation()}
+                className="space-y-2.5 mb-5 border-t border-white/5 pt-4 overflow-y-auto max-h-[140px] pr-1"
+              >
                 {project.details.map((detail, idx) => (
                   <div key={idx} className="flex items-start gap-2.5">
                     <Check className="w-3.5 h-3.5 text-primary/60 shrink-0 mt-0.5" />
@@ -164,7 +171,7 @@ export function ProjectCard({ project }: { project: ProjectItem; key?: string })
 
 // Projects gallery with category filtering
 export function ProjectsSection({ onViewArchive }: { onViewArchive: () => void }) {
-  const [activeFilter, setActiveFilter] = useState<'python' | 'flask-web' | 'c-cpp'>('python');
+  const [activeFilter, setActiveFilter] = useState<'python' | 'flask-web' | 'c-cpp' | 'website-webapp'>('python');
   const headerRef = useRef<HTMLDivElement>(null);
   const headerInView = useInView(headerRef, { once: true, margin: "-80px" });
 
@@ -184,6 +191,7 @@ export function ProjectsSection({ onViewArchive }: { onViewArchive: () => void }
   const filterOptions = [
     { label: "Python & Algorithms", value: "python" as const },
     { label: "Flask & Web", value: "flask-web" as const },
+    { label: "Website / Webapp", value: "website-webapp" as const },
     { label: "C / C++ & Systems", value: "c-cpp" as const },
   ];
 
