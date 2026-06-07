@@ -1,9 +1,18 @@
 import { useState, useRef } from "react";
-import { motion, useInView, useScroll, useTransform } from "motion/react";
-import { Check, Github, ExternalLink, Code, ArrowRight } from "lucide-react";
+import { createPortal } from "react-dom";
+import { motion, useInView, useScroll, useTransform, AnimatePresence } from "motion/react";
+import { Check, Github, ExternalLink, Code, ArrowRight, Play, X } from "lucide-react";
 import { projectsData } from "../data";
 import { ProjectItem } from "../types";
 import { TitleStaggerReveal } from "./TitleStaggerReveal";
+
+function getYoutubeEmbedUrl(url: string) {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11)
+    ? `https://www.youtube.com/embed/${match[2]}?autoplay=1`
+    : url;
+}
 
 const containerVariants = {
   hidden: { 
@@ -41,61 +50,87 @@ const childVariants = {
 // Card displaying project details, supports rotation flip interaction
 export function ProjectCard({ project }: { project: ProjectItem; key?: string }) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      onClick={() => setIsFlipped(!isFlipped)}
-      className="relative w-full h-[450px] perspective-1000 cursor-pointer group"
-    >
+    <>
       <motion.div
-        className="relative w-full h-full preserve-3d"
-        animate={{ rotateY: isFlipped ? 180 : 0 }}
-        transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        onClick={(e) => {
+          // Do not flip if clicked on the play button, or any link/button
+          const target = e.target as HTMLElement;
+          if (target.closest('.play-walkthrough-btn') || target.closest('a') || target.closest('button')) {
+            return;
+          }
+          setIsFlipped(!isFlipped);
+        }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className="relative w-full h-[450px] perspective-1000 cursor-pointer group"
       >
-        {/* Front side of the card */}
-        <div className="absolute inset-0 w-full h-full rounded-2xl overflow-hidden flex flex-col justify-between p-6 sm:p-8 backface-hidden bg-[#121212] border border-white/5 group-hover:border-primary/20 hover:shadow-2xl hover:shadow-black transition-all duration-300">
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-[9px] font-mono text-primary bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-full uppercase tracking-wider">
-              {project.category === 'python'
-                ? 'Python'
-                : project.category === 'flask-web'
-                ? 'Flask / Web'
-                : project.category === 'website-webapp'
-                ? 'Website / Webapp'
-                : 'C / C++'}
-            </span>
-            <span className="text-[9px] font-mono text-gray-500 uppercase tracking-widest group-hover:text-primary transition-colors">
-              Click to Flip
-            </span>
-          </div>
+        <motion.div
+          className="relative w-full h-full preserve-3d"
+          animate={{ rotateY: isFlipped ? 180 : 0 }}
+          transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+        >
+          {/* Front side of the card */}
+          <div className={`absolute inset-0 w-full h-full rounded-2xl overflow-hidden flex flex-col justify-between p-6 sm:p-8 backface-hidden bg-[#121212] border border-white/5 group-hover:border-primary/20 hover:shadow-2xl hover:shadow-black transition-all duration-300 preserve-3d ${isFlipped ? 'pointer-events-none' : 'pointer-events-auto'}`}>
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-[9px] font-mono text-primary bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-full uppercase tracking-wider">
+                {project.category === 'python'
+                  ? 'Python'
+                  : project.category === 'flask-web'
+                  ? 'Flask / Web'
+                  : project.category === 'website-webapp'
+                  ? 'Website / Webapp'
+                  : 'C / C++'}
+              </span>
+              <span className="text-[9px] font-mono text-gray-500 uppercase tracking-widest group-hover:text-primary transition-colors">
+                Click to Flip
+              </span>
+            </div>
 
-          <div className="flex-1 w-full relative rounded-xl overflow-hidden border border-white/5 bg-zinc-950 flex items-center justify-center">
-            {project.image ? (
-              <img
-                src={project.image}
-                alt={project.title}
-                className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-700 pointer-events-none select-none"
-              />
-            ) : (
-              <Code className="w-10 h-10 text-white/5" />
+            <div className="flex-1 w-full relative rounded-xl overflow-hidden border border-white/5 bg-zinc-950 flex items-center justify-center preserve-3d">
+              {project.image ? (
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-700 pointer-events-none select-none"
+                />
+              ) : (
+                <Code className="w-10 h-10 text-white/5" />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+            </div>
+
+          <div className="mt-5 flex items-end justify-between w-full">
+            <div className="min-w-0 flex-1">
+              <h3 className="text-lg font-normal text-[#E1E0CC] mb-1.5">{project.title}</h3>
+              <p className="text-[9px] font-mono text-gray-500 truncate uppercase tracking-wider">
+                {project.techStack.join(" • ")}
+              </p>
+            </div>
+            {project.videoLink && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsVideoOpen(true);
+                }}
+                className="play-walkthrough-btn bg-primary text-black hover:bg-primary/90 hover:scale-105 transition-all p-2 rounded-full shadow-lg shrink-0 ml-3 cursor-pointer pointer-events-auto"
+                title="Play Walkthrough"
+              >
+                <Play className="w-3.5 h-3.5 fill-current" />
+              </button>
             )}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-          </div>
-
-          <div className="mt-5">
-            <h3 className="text-lg font-normal text-[#E1E0CC] mb-1.5">{project.title}</h3>
-            <p className="text-[9px] font-mono text-gray-500 truncate uppercase tracking-wider">
-              {project.techStack.join(" • ")}
-            </p>
           </div>
         </div>
 
         {/* Back side of the card */}
-        <div className="absolute inset-0 w-full h-full rounded-2xl p-6 sm:p-8 backface-hidden rotate-y-180 bg-[#121212] border border-white/5 flex flex-col justify-between hover:shadow-2xl hover:shadow-black transition-shadow duration-300">
+        <div className={`absolute inset-0 w-full h-full rounded-2xl p-6 sm:p-8 backface-hidden rotate-y-180 bg-[#121212] border border-white/5 flex flex-col justify-between hover:shadow-2xl hover:shadow-black transition-shadow duration-300 ${isFlipped ? 'pointer-events-auto' : 'pointer-events-none'}`}>
           <div>
             <div className="flex items-center justify-between mb-5">
               <span className="text-[9px] font-mono text-primary bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-full uppercase tracking-wider">
@@ -166,6 +201,38 @@ export function ProjectCard({ project }: { project: ProjectItem; key?: string })
         </div>
       </motion.div>
     </motion.div>
+
+      {/* Video Modal Portal */}
+      {isVideoOpen && project.videoLink && createPortal(
+        <div 
+          onClick={() => setIsVideoOpen(false)}
+          className="fixed inset-0 w-screen h-screen bg-black/95 backdrop-blur-md z-[9999] flex items-center justify-center p-4 sm:p-8 cursor-default"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-5xl aspect-video rounded-2xl overflow-hidden border border-white/10 bg-zinc-950 shadow-2xl transition-all duration-300 transform scale-100"
+          >
+            {/* Close Button */}
+            <button 
+              onClick={() => setIsVideoOpen(false)}
+              className="absolute top-4 right-4 z-50 bg-black/80 hover:bg-primary hover:text-black text-white/80 p-2 rounded-full border border-white/10 transition-all cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            
+            {/* Video Iframe */}
+            <iframe
+              src={getYoutubeEmbedUrl(project.videoLink)}
+              title={`${project.title} Video Walkthrough`}
+              className="w-full h-full border-0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          </div>
+        </div>,
+        document.body
+      )}
+    </>
   );
 }
 

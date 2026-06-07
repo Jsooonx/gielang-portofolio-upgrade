@@ -11,6 +11,7 @@ export interface ProjectItem {
   techStack: string[];
   githubLink?: string;
   demoLink?: string;
+  videoLink?: string;
   details?: string[];
   image?: string;
   featured: boolean;

@@ -2,6 +2,23 @@ import { ProjectItem, Achievement } from "./types";
 
 export const projectsData: ProjectItem[] = [
   {
+    id: "warungify",
+    title: "Warungify",
+    description: "A client-side operations workspace for sellers who run their business through WhatsApp, turning messy chat-based orders into a structured workflow.",
+    category: "website-webapp",
+    techStack: ["React", "TypeScript", "Tailwind CSS", "Supabase"],
+    githubLink: "https://github.com/Jsooonx/warungify-webapp",
+    demoLink: "https://warungify.jsooonx.my.id",
+    videoLink: "https://youtu.be/33MHnN6Ymos",
+    image: "/images/warungify.png",
+    featured: true,
+    details: [
+      "Parses raw chat-style order text into structured details (name, phone, items, and pricing) using an in-app 'Magic Paste' parser.",
+      "Automates workflow tracking (payment, packing, shipping, invoice creation) with quick click-to-chat WhatsApp action templates.",
+      "Secures seller workspaces with Supabase-backed authentication, row-level security (RLS), and a pre-signup beta-gate allowlist."
+    ]
+  },
+  {
     id: "photo-toolkit",
     title: "PhotoToolkit",
     description: "An all-in-one, 100% client-side image editor that processes photos locally in the browser to ensure absolute privacy.",
