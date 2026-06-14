@@ -19,22 +19,6 @@ export const projectsData: ProjectItem[] = [
     ]
   },
   {
-    id: "photo-toolkit",
-    title: "PhotoToolkit",
-    description: "An all-in-one, 100% client-side image editor that processes photos locally in the browser to ensure absolute privacy.",
-    category: "website-webapp",
-    techStack: ["React", "TypeScript", "MediaPipe AI", "Canvas API", "Client-Side", "Tailwind CSS"],
-    githubLink: "https://github.com/Jsooonx/photo-toolkit-webapp",
-    demoLink: "https://photo-toolkit.vercel.app/",
-    image: "/images/photo-toolkit.png",
-    featured: true,
-    details: [
-      "Built 100% client-side processors using Canvas API for image resizing, format conversion (JPG/PNG/WebP), and smart file compression.",
-      "Integrated MediaPipe Selfie Segmentation AI running locally on the user's browser for instant automatic background removal.",
-      "Implemented an interactive manual mask editor (erase, restore, history undo, brush sizing, and zoom) to refine AI boundaries with pixel precision."
-    ]
-  },
-  {
     id: "pulse",
     title: "Pulse",
     description: "A full-stack financial tracker featuring NLP spending analysis, automated anomaly detection, and real-time Telegram notifications.",
