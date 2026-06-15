@@ -18,4 +18,4 @@ A dark, moody, and cinematic developer portfolio page. Designed with modern web 
 - **Robotics Achievements:** Timeline tracking of robotics championships and self-guided learning milestones.
 
 ---
-*Created by [Gielang](https://github.com/)*
+*Created by [Jsooonx/Gielang](https://github.com/Jsooonx)*
