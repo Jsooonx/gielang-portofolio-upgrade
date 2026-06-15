@@ -12,7 +12,7 @@ const Path = (props: any) => (
 );
 
 interface NavigationMenuProps {
-  currentView: 'main' | 'archive';
+  currentView: 'main' | 'archive' | 'project-detail';
   activeSection: string;
   onNavigate: (target: string) => void;
 }

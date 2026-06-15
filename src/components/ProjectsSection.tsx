@@ -164,7 +164,18 @@ export function ProjectCard({ project }: { project: ProjectItem; key?: string })
               </div>
             </div>
 
-            <h3 className="text-xl font-normal text-[#E1E0CC] mb-3">{project.title}</h3>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-xl font-normal text-[#E1E0CC]">{project.title}</h3>
+              {["warungify", "scholarhub"].includes(project.id) && (
+                <a
+                  href={`#project/${project.id}`}
+                  onClick={(e) => e.stopPropagation()}
+                  className="text-[10px] font-mono text-primary border border-primary/30 hover:border-primary hover:bg-primary/10 px-2.5 py-1.5 rounded transition-all flex items-center gap-1.5 uppercase shrink-0"
+                >
+                  Case Study <ArrowRight className="w-3 h-3" />
+                </a>
+              )}
+            </div>
             <p className="text-xs text-gray-400 font-light leading-relaxed mb-5">
               {project.description}
             </p>

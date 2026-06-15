@@ -19,6 +19,22 @@ export const projectsData: ProjectItem[] = [
     ]
   },
   {
+    id: "scholarhub",
+    title: "ScholarHub",
+    description: "A curated directory of global scholarships designed to help students discover and apply for study abroad opportunities, consolidating official information into a unified platform.",
+    category: "website-webapp",
+    techStack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
+    githubLink: "https://github.com/Jsooonx/scholarhub-webapp",
+    demoLink: "https://scholarhub.jsooonx.my.id",
+    image: "/images/scholarhub/heropage.png",
+    featured: true,
+    details: [
+      "Displays featured global programs (DAAD, MEXT, Chevening, GKS, etc.) using an interactive hero slideshow with smooth animations powered by Framer Motion.",
+      "Empowers users with multi-faceted search to filter opportunities by provider type, degree levels, funding status, and destination countries.",
+      "Dynamically tracks and displays application status (Open, Closing Soon, Closed, Rolling Intake) by parsing real-time deadline data."
+    ]
+  },
+  {
     id: "pulse",
     title: "Pulse",
     description: "A full-stack financial tracker featuring NLP spending analysis, automated anomaly detection, and real-time Telegram notifications.",

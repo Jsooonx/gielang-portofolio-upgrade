@@ -11,57 +11,118 @@ import { NavigationMenu } from "./components/NavigationMenu";
 import { FooterSection } from "./components/FooterSection";
 import { InitialPreloader } from "./components/InitialPreloader";
 
+import { ProjectDetail } from "./components/ProjectDetail";
+
 export default function App() {
   const pageTransitionRef = useRef<PageTransitionRef>(null);
-  const [, setIsTransitionActive] = useState(false);
-  const [currentView, setCurrentView] = useState<'main' | 'archive'>('main');
+  const [isTransitionActive, setIsTransitionActive] = useState(false);
+  const [currentView, setCurrentView] = useState<'main' | 'archive' | 'project-detail'>('main');
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<string>("#story");
   const [isPreloaded, setIsPreloaded] = useState(false);
+
+  // Keep refs updated to prevent stale closures inside event listeners
+  const currentViewRef = useRef(currentView);
+  const selectedProjectIdRef = useRef(selectedProjectId);
+  const isTransitionActiveRef = useRef(isTransitionActive);
+
+  useEffect(() => {
+    currentViewRef.current = currentView;
+    selectedProjectIdRef.current = selectedProjectId;
+    isTransitionActiveRef.current = isTransitionActive;
+  }, [currentView, selectedProjectId, isTransitionActive]);
+
+  // Synchronize view state with URL hash and trigger slide curtain transitions
+  useEffect(() => {
+    let lastHash = window.location.hash;
+
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      if (hash === lastHash) return;
+
+      const prevView = currentViewRef.current;
+      const prevProjectId = selectedProjectIdRef.current;
+
+      let nextView: 'main' | 'archive' | 'project-detail' = 'main';
+      let nextProjectId: string | null = null;
+
+      if (hash === '#archive') {
+        nextView = 'archive';
+      } else if (hash.startsWith('#project/')) {
+        nextView = 'project-detail';
+        nextProjectId = hash.replace('#project/', '');
+      }
+
+      // Check if the view is actually changing
+      const isViewChanging = prevView !== nextView || (nextView === 'project-detail' && prevProjectId !== nextProjectId);
+
+      const applyStateChanges = () => {
+        setCurrentView(nextView);
+        setSelectedProjectId(nextProjectId);
+        window.scrollTo(0, 0);
+        lastHash = hash;
+
+        if (nextView === 'main' && hash && hash.startsWith('#')) {
+          const target = document.querySelector(hash) as HTMLElement | null;
+          if (target) {
+            setTimeout(() => {
+              target.scrollIntoView({ behavior: "auto" });
+            }, 50);
+          }
+        }
+      };
+
+      if (isViewChanging && pageTransitionRef.current && !isTransitionActiveRef.current) {
+        setIsTransitionActive(true);
+        pageTransitionRef.current.trigger(() => {
+          applyStateChanges();
+        }).then(() => {
+          setIsTransitionActive(false);
+        });
+      } else {
+        applyStateChanges();
+      }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+
+    // Initial mount check (run instantly without transition)
+    const hash = window.location.hash;
+    let initialView: 'main' | 'archive' | 'project-detail' = 'main';
+    let initialProjectId: string | null = null;
+    if (hash === '#archive') {
+      initialView = 'archive';
+    } else if (hash.startsWith('#project/')) {
+      initialView = 'project-detail';
+      initialProjectId = hash.replace('#project/', '');
+    }
+    setCurrentView(initialView);
+    setSelectedProjectId(initialProjectId);
+    lastHash = hash;
+
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   // Handles page view changes and smooth scroll navigation with transition effect
   const handleNavigation = (targetId: string) => {
     if (targetId.startsWith("#")) {
-      const targetElement = document.querySelector(targetId) as HTMLElement | null;
-      
-      if (currentView === 'archive') {
-        if (pageTransitionRef.current) {
-          setIsTransitionActive(true);
-          pageTransitionRef.current.trigger(() => {
-            setCurrentView('main');
-            setTimeout(() => {
-              const element = document.querySelector(targetId) as HTMLElement | null;
-              if (element) {
-                element.scrollIntoView({ behavior: "auto" });
-              }
-            }, 50);
-          }).then(() => {
-            setIsTransitionActive(false);
+      const activeView = currentViewRef.current;
+      // If we are navigating to a main section from the main view, scroll smoothly
+      if (activeView === 'main' && !targetId.startsWith('#project/') && targetId !== '#archive') {
+        const targetElement = document.querySelector(targetId) as HTMLElement | null;
+        if (targetElement && (window as any).lenis) {
+          (window as any).lenis.scrollTo(targetElement, {
+            offset: 0,
+            duration: 1.5,
           });
-        } else {
-          setCurrentView('main');
-          setTimeout(() => {
-            const element = document.querySelector(targetId) as HTMLElement | null;
-            if (element) {
-              element.scrollIntoView({ behavior: "smooth" });
-            }
-          }, 100);
-        }
-      } else {
-        if (targetElement && pageTransitionRef.current) {
-          setIsTransitionActive(true);
-          pageTransitionRef.current.trigger(() => {
-            targetElement.scrollIntoView({ behavior: "auto" });
-          }).then(() => {
-            setIsTransitionActive(false);
-          });
-        } else if (targetElement) {
-          targetElement.scrollIntoView({ behavior: "smooth" });
+          history.pushState(null, '', targetId);
+          return;
         }
       }
+      // Otherwise update the hash to trigger the hash router transition
+      window.location.hash = targetId;
     }
   };
-
-  // Lenis smooth scroll setup and anchor click handling
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -85,24 +146,31 @@ export default function App() {
         const href = anchor.getAttribute("href");
         if (href && href.startsWith("#")) {
           e.preventDefault();
-          const target = document.querySelector(href) as HTMLElement | null;
-          if (target) {
+          
+          const isSpecialRoute = href === '#archive' || href.startsWith('#project/');
+          const activeView = currentViewRef.current;
+
+          if (isSpecialRoute || activeView !== 'main') {
             if (pageTransitionRef.current) {
               setIsTransitionActive(true);
               pageTransitionRef.current.trigger(() => {
-                lenis.scrollTo(target, {
-                  offset: 0,
-                  immediate: true,
-                });
+                window.location.hash = href;
               }).then(() => {
                 setIsTransitionActive(false);
               });
             } else {
-              lenis.scrollTo(target, {
-                offset: 0,
-                duration: 2.0,
-              });
+              window.location.hash = href;
             }
+            return;
+          }
+
+          const target = document.querySelector(href) as HTMLElement | null;
+          if (target) {
+            lenis.scrollTo(target, {
+              offset: 0,
+              duration: 1.5,
+            });
+            history.pushState(null, '', href);
           }
         }
       }
@@ -153,41 +221,24 @@ export default function App() {
           <HeroSection />
           <AboutSection />
           <ProjectsSection onViewArchive={() => {
-            if (pageTransitionRef.current) {
-              setIsTransitionActive(true);
-              pageTransitionRef.current.trigger(() => {
-                setCurrentView('archive');
-                window.scrollTo(0, 0);
-              }).then(() => {
-                setIsTransitionActive(false);
-              });
-            } else {
-              setCurrentView('archive');
-              window.scrollTo(0, 0);
-            }
+            window.location.hash = '#archive';
           }} />
           <AchievementsSection />
         </div>
 
         {currentView === 'archive' && (
           <ProjectsArchive onViewMain={() => {
-            if (pageTransitionRef.current) {
-              setIsTransitionActive(true);
-              pageTransitionRef.current.trigger(() => {
-                setCurrentView('main');
-                setTimeout(() => {
-                  const target = document.querySelector("#projects");
-                  if (target) {
-                    target.scrollIntoView({ behavior: "auto" });
-                  }
-                }, 50);
-              }).then(() => {
-                setIsTransitionActive(false);
-              });
-            } else {
-              setCurrentView('main');
-            }
+            window.location.hash = '#projects';
           }} />
+        )}
+
+        {currentView === 'project-detail' && selectedProjectId && (
+          <ProjectDetail
+            projectId={selectedProjectId}
+            onBack={() => {
+              window.location.hash = '#projects';
+            }}
+          />
         )}
 
         <SocialsFanOut />
