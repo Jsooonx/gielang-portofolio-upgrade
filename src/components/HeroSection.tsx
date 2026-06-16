@@ -218,7 +218,7 @@ export function HeroSection() {
                 animate="visible"
                 className="text-primary/70 text-xs sm:text-sm md:text-base leading-[1.4] text-center font-light px-2"
               >
-                Gielang is an aspiring computer science student and full-stack developer. Combining software engineering with hands-on robotics, he builds intelligent systems and interactive web applications.
+                I'm a Computer Science and Algorithms enthusiast and full-stack developer. Combining software engineering with hands-on robotics, I build intelligent systems and interactive web applications.
               </motion.p>
 
               <motion.div
