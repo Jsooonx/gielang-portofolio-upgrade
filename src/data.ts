@@ -1,4 +1,4 @@
-import { ProjectItem, Achievement } from "./types";
+import { ProjectItem, Achievement, GalleryItem } from "./types";
 
 export const projectsData: ProjectItem[] = [
   {
@@ -239,6 +239,20 @@ export const projectsData: ProjectItem[] = [
 
 export const achievementsData: Achievement[] = [
   {
+    id: "efset",
+    year: "06/2026",
+    title: "EF SET English Certificate (C2 Proficient)",
+    role: "EF Standard English Test (EF SET)",
+    description: "Successfully completed the EF SET Certificate and earned level C2 Proficient (overall score of 71/100).",
+    category: "education",
+    image: "/images/EFSETScore.png",
+    details: [
+      "Overall Score: 71/100 (C2 Proficient according to the Common European Framework of Reference).",
+      "Scores: Listening 80 (C2), Speaking 77 (C2), Reading 76 (C2), Writing 52 (B2).",
+      "Verification URL: cert.efset.org/uxfcry"
+    ]
+  },
+  {
     id: "cs50",
     year: "01/2026 - 03/2026",
     title: "CS50: Introduction to Computer Science",
@@ -306,7 +320,8 @@ export const achievementsData: Achievement[] = [
     category: "achievement",
     image: "/images/JRC-IX-Awarding-Photo.png",
     details: [
-      "Awarded Best Time for Mission Completion for achieving the fastest execution in the category."
+      "Awarded Best Time for Mission Completion for achieving the fastest execution in the category.",
+      "During one of the rounds, overcame a sudden connector problem between the robot and the controller, repairing it on-the-spot while the timer was running to pull off a comeback win."
     ]
   },
   {
@@ -316,6 +331,120 @@ export const achievementsData: Achievement[] = [
     role: "LKT UNESA 2017 - State University of Surabaya (UNESA)",
     description: "Ranked 1st among ~30 participants in a competitive beginner robotics challenge.",
     category: "achievement",
-    image: "/images/LKT-2017.png"
+    image: "/images/LKT-2017.png",
+    details: [
+      "First major victory in the beginner category, validating core controller designs."
+    ]
   }
 ];
+
+export const galleryData: GalleryItem[] = [
+  {
+    id: "efset-score",
+    image: "/images/EFSETScore.png",
+    title: "EF SET Certificate: C2 Proficient English",
+    category: "Academic Certification",
+    year: "June 2026",
+    description: "Earned an overall score of 71/100 on the EF Standard English Test, certifying English proficiency at the C2 Proficient level (CEFR scale). Showing exceptional listening, reading, and speaking skills.",
+    details: [
+      "Overall Score: 71/100 (C2 Proficient according to the Common European Framework of Reference).",
+      "Subscores: Listening 80 (C2 Proficient), Speaking 77 (C2 Proficient), Reading 76 (C2 Proficient), Writing 52 (B2 Upper Intermediate).",
+      "Credential URL: cert.efset.org/uxfcry"
+    ]
+  },
+  {
+    id: "volun-properti-dramus",
+    image: "/images/Volun-Properti-Dramus.jpeg",
+    title: "Musical Drama Stage Production",
+    category: "Art & Production",
+    year: "2024",
+    description: "Contributed as property staff and supporting actor in a school-wide musical drama production involving 50+ participants. Supported rehearsal coordination and live performance execution in a school-wide drama competition.",
+    details: [
+      "Contributed as property staff and supporting actor in a school-wide musical drama production.",
+      "Supported rehearsal coordination and live performance execution in a school-wide drama competition."
+    ]
+  },
+  {
+    id: "volun-finance-kopikat",
+    image: "/images/Volun-Finance-Kopikat.jpeg",
+    title: "KOPIKAT Student Company: Finance Operations",
+    category: "Finance & Management",
+    year: "2022 - 2023",
+    description: "Managed budgeting, transaction tracking, and financial documentation using Excel throughout a semester-long student enterprise. Maintained organized revenue and expense records to support daily operations and financial accountability.",
+    details: [
+      "Managed budgeting, transaction tracking, and financial documentation using Excel.",
+      "Maintained organized revenue and expense records to support daily operations and financial accountability."
+    ]
+  },
+  {
+    id: "jrc-ix-awarding",
+    image: "/images/JRC-IX-Awarding-Photo.png",
+    title: "Java Robot Contest IX: Awarding Ceremony",
+    category: "Robotics Achievement",
+    year: "March 2018",
+    description: "A proud moment on the podium at the Java Robot Contest IX held at PENS, ranking 1st in the Robot Transporter Category. During one of the rounds, we faced a major crisis where the robot's connector to the controller broke. We repaired the hardware on-the-spot with the timer ticking down, made an incredible comeback, and ultimately won the round and the championship.",
+    details: [
+      "Ranked 1st in a national robotics competition involving 150+ participants across elementary to university categories.",
+      "Overcame a critical connector failure mid-round under strict time constraints to secure the victory."
+    ]
+  },
+  {
+    id: "jrc-ix-plaque",
+    image: "/images/JRCIX1stPlacePlaque.png",
+    title: "JRC IX 1st Place Champion Plaque",
+    category: "Robotics Trophy",
+    year: "March 2018",
+    description: "The official glass plaque awarded for securing the 1st Place in the Robot Transporter Category at Java Robot Contest IX. Stands as a physical testament to technical perseverance and successful problem-solving under pressure.",
+    details: [
+      "Awarded by the State Polytechnic of Electronics Surabaya (PENS) in March 2018.",
+      "Represents team victory in the transporter robotics division."
+    ]
+  },
+  {
+    id: "jrc-ix-best-time",
+    image: "/images/JRCIXBestTime.png",
+    title: "Best Time Award - Java Robot Contest IX",
+    category: "Special Award",
+    year: "March 2018",
+    description: "Awarded the 'Best Time for Mission Completion' for achieving the fastest execution in the Robot Transporter category. Based on the mission requirements, my robot completed the arena challenges with the fastest and most efficient execution.",
+    details: [
+      "Awarded Best Time for achieved the fastest execution in the category.",
+      "Reflects optimal strategy, driver reflexes, and robot pathing efficiency."
+    ]
+  },
+  {
+    id: "robot-transporter",
+    image: "/images/Robot2.png",
+    title: "Robotic Transporter: Hardware Design & Testing",
+    category: "Robotics Hardware",
+    year: "March 2018",
+    description: "A close-up of my custom autonomous robot transporter. The hardware wiring, structural design, and mechanical assembly were engineered and built by my team mentor, while I acted as the primary driver (controller) and designed the arena run strategies.",
+    details: [
+      "Hardware mechanical design, wiring, and assembly engineered by my team mentor.",
+      "Operated by me as the main controller driver and lead track strategist."
+    ]
+  },
+  {
+    id: "lkt-unesa-awarding",
+    image: "/images/LKT-2017.png",
+    title: "LKT UNESA 2017 Awarding Ceremony",
+    category: "Robotics Achievement",
+    year: "October 2017",
+    description: "Ranked 1st among ~30 participants in a competitive beginner robotics challenge. This early victory validated my core controller designs and set the path for future advanced competitions.",
+    details: [
+      "Ranked 1st among ~30 participants in a competitive beginner robotics challenge."
+    ]
+  },
+  {
+    id: "lkt-unesa-trophy",
+    image: "/images/LKT20171stPlaceTrophy.png",
+    title: "LKT UNESA 2017 Champion Trophy",
+    category: "Robotics Trophy",
+    year: "October 2017",
+    description: "The physical 1st Place trophy awarded at LKT UNESA 2017. Representing my first major competitive robotics victory, marking the beginning of my competitive journey.",
+    details: [
+      "Awarded by the Faculty of Engineering, State University of Surabaya."
+    ]
+  }
+];
+

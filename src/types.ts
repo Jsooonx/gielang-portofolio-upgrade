@@ -27,3 +27,15 @@ export interface Achievement {
   category: 'achievement' | 'activity' | 'education';
   image?: string;
 }
+
+export interface GalleryItem {
+  id: string;
+  image: string;
+  images?: string[];
+  title: string;
+  category: string;
+  year: string;
+  description: string;
+  details?: string[];
+}
+
