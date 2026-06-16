@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "motion/react";
-import { Trophy, Sparkles, Pin, GraduationCap, ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Calendar } from "lucide-react";
-import { achievementsData, galleryData } from "../data";
+import { Trophy, Sparkles, Pin, GraduationCap, ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Calendar, X, ExternalLink, Award, Code, BookOpen, Github } from "lucide-react";
+import { achievementsData, galleryData, journeyData } from "../data";
 import { TitleStaggerReveal } from "./TitleStaggerReveal";
 
 const containerVariants = {
@@ -42,8 +42,12 @@ export function AchievementsSection() {
   const headerRef = useRef<HTMLDivElement>(null);
   const headerInView = useInView(headerRef, { once: true, margin: "-80px" });
 
-  const [viewMode, setViewMode] = useState<"timeline" | "gallery">("timeline");
+  const [viewMode, setViewMode] = useState<"timeline" | "journey" | "gallery">("timeline");
   const [activeIdx, setActiveIdx] = useState(0);
+
+  // Lightbox Modal state
+  const [lightboxImg, setLightboxImg] = useState<string | null>(null);
+  const [lightboxTitle, setLightboxTitle] = useState<string>("");
 
   const visibleItems = achievementsData;
   const visibleItemsWithImages = visibleItems.filter((item) => item.image);
@@ -65,7 +69,7 @@ export function AchievementsSection() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [viewMode]);
+  }, [viewMode, activeIdx]);
 
   const activeGalleryItem = galleryData[activeIdx] || galleryData[0];
 
@@ -117,7 +121,7 @@ export function AchievementsSection() {
           </motion.div>
         </motion.div>
 
-        {/* View Mode Toggle Switch (Matches ProjectsSection styling) */}
+        {/* View Mode Toggle Switch (Matches ProjectsSection styling, 3 Options) */}
         <div className="flex flex-wrap items-center justify-center gap-2 mb-12 relative z-20 max-w-2xl mx-auto">
           <button
             onClick={() => setViewMode("timeline")}
@@ -128,6 +132,17 @@ export function AchievementsSection() {
             }`}
           >
             Timeline View
+          </button>
+
+          <button
+            onClick={() => setViewMode("journey")}
+            className={`px-4 py-2 text-xs uppercase tracking-wider font-semibold rounded-full border transition-all duration-200 cursor-pointer ${
+              viewMode === "journey"
+                ? "border-primary text-black bg-primary"
+                : "border-white/10 text-primary/70 hover:border-white/30 hover:text-primary bg-zinc-950/40"
+            }`}
+          >
+            Coding Journey
           </button>
           
           <button
@@ -189,7 +204,11 @@ export function AchievementsSection() {
                               whileInView={{ opacity: 1, scale: 1 }}
                               viewport={{ once: true }}
                               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                              className="lg:w-[150px] xl:w-[200px] 2xl:w-[240px] lg:h-[100px] xl:h-[133px] 2xl:h-[160px] shrink-0 rounded-2xl border border-white/5 overflow-hidden relative bg-zinc-950 group-hover/item:border-primary/20 transition-all duration-300"
+                              onClick={() => {
+                                setLightboxImg(item.image!);
+                                setLightboxTitle(`${item.year} - ${item.title}`);
+                              }}
+                              className="lg:w-[150px] xl:w-[200px] 2xl:w-[240px] lg:h-[100px] xl:h-[133px] 2xl:h-[160px] shrink-0 rounded-2xl border border-white/5 overflow-hidden relative bg-zinc-950 group-hover/item:border-primary/20 transition-all duration-300 cursor-zoom-in"
                             >
                               <img
                                 src={item.image}
@@ -295,7 +314,13 @@ export function AchievementsSection() {
                                 )}
 
                                 {hasImage && (
-                                  <div className="lg:hidden mt-5 w-full rounded-xl border border-white/5 overflow-hidden bg-zinc-950">
+                                  <div 
+                                    onClick={() => {
+                                      setLightboxImg(item.image!);
+                                      setLightboxTitle(`${item.year} - ${item.title}`);
+                                    }}
+                                    className="lg:hidden mt-5 w-full rounded-xl border border-white/5 overflow-hidden bg-zinc-950 cursor-zoom-in"
+                                  >
                                     <img src={item.image} alt={item.title} className="w-full h-auto object-cover max-h-[220px]" />
                                   </div>
                                 )}
@@ -328,7 +353,11 @@ export function AchievementsSection() {
                                     whileInView={{ opacity: 1, scale: 1 }}
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                                    className="hidden lg:flex lg:w-[150px] xl:w-[200px] 2xl:w-[240px] lg:h-[100px] xl:h-[133px] 2xl:h-[160px] shrink-0 rounded-2xl border border-white/5 overflow-hidden relative bg-zinc-950 group-hover/item:border-primary/20 transition-all duration-300"
+                                    onClick={() => {
+                                      setLightboxImg(item.image!);
+                                      setLightboxTitle(`${item.year} - ${item.title}`);
+                                    }}
+                                    className="hidden lg:flex lg:w-[150px] xl:w-[200px] 2xl:w-[240px] lg:h-[100px] xl:h-[133px] 2xl:h-[160px] shrink-0 rounded-2xl border border-white/5 overflow-hidden relative bg-zinc-950 group-hover/item:border-primary/20 transition-all duration-300 cursor-zoom-in"
                                   >
                                     <img
                                       src={item.image}
@@ -346,6 +375,110 @@ export function AchievementsSection() {
                   );
                 })}
               </motion.div>
+            ) : viewMode === "journey" ? (
+              <motion.div
+                key="journey-view"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="relative max-w-4xl mx-auto py-8"
+              >
+                {/* Vertical Timeline Stepper Line */}
+                <div className="absolute left-6 top-0 bottom-0 w-[1px] bg-white/[0.08] z-0" />
+
+                <div className="space-y-10 relative z-10">
+                  {journeyData.map((item) => {
+                    return (
+                      <motion.div
+                        key={item.id}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-40px" }}
+                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                        className="flex flex-col items-stretch w-full relative"
+                      >
+                        {/* Checkpoint Badge Dot */}
+                        <div className="absolute left-6 -translate-x-1/2 top-7 flex items-center justify-center z-10">
+                          <div className="w-10 h-10 rounded-full bg-[#161616] border border-primary/30 flex items-center justify-center text-primary shadow-lg shadow-black/50 shrink-0">
+                            {item.platform === "freeCodeCamp" ? (
+                              <Code className="w-4 h-4" />
+                            ) : item.platform === "HackerRank" ? (
+                              <Award className="w-4 h-4" />
+                            ) : (
+                              <BookOpen className="w-4 h-4" />
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Content Card Column */}
+                        <div className="w-full pl-16">
+                          <div className="bg-[#101010] rounded-2xl border border-white/5 p-6 sm:p-8 hover:border-primary/20 transition-all duration-300 flex flex-col md:flex-row gap-6 items-stretch relative">
+                            {/* Text Info */}
+                            <div className="flex-grow min-w-0 flex flex-col justify-between">
+                              <div>
+                                <span className="text-[10px] font-mono text-primary bg-primary/10 border border-primary/20 px-2.5 py-0.5 rounded-full uppercase tracking-wider mb-3.5 inline-block font-semibold">
+                                  {item.duration}
+                                </span>
+                                <h4 className="text-base sm:text-lg font-normal text-[#E1E0CC] mb-1">{item.title}</h4>
+                                <p className="text-[10px] font-mono uppercase tracking-widest text-primary/50 mb-3">{item.platform}</p>
+                                
+                                <p className="text-xs text-gray-400 font-light leading-relaxed mb-4">{item.description}</p>
+                                
+                                <ul className="space-y-2 mb-4">
+                                  {item.details.map((detail, dIdx) => (
+                                    <li key={dIdx} className="flex items-start gap-2.5">
+                                      <Pin className="w-3.5 h-3.5 text-primary/40 shrink-0 mt-0.5" />
+                                      <span className="text-[11px] text-gray-500 font-light leading-normal">{detail}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+
+                              {item.credentialUrl && (
+                                <a
+                                  href={item.credentialUrl}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="inline-flex items-center gap-1.5 text-[10px] font-mono text-primary/70 hover:text-primary transition-colors uppercase tracking-wider mt-2 font-semibold"
+                                >
+                                  {item.credentialUrl.includes("github.com") ? (
+                                    <>
+                                      GitHub Repository <Github className="w-3 h-3" />
+                                    </>
+                                  ) : (
+                                    <>
+                                      Verify Profile <ExternalLink className="w-3 h-3" />
+                                    </>
+                                  )}
+                                </a>
+                              )}
+                            </div>
+
+                            {/* Clickable Image Preview */}
+                            <div 
+                              onClick={() => {
+                                setLightboxImg(item.image);
+                                setLightboxTitle(`${item.platform} - ${item.title}`);
+                              }}
+                              className="w-full md:w-[220px] lg:w-[260px] aspect-video shrink-0 rounded-xl border border-white/5 overflow-hidden relative bg-zinc-950 group/img cursor-zoom-in hover:border-primary/30 transition-all duration-300"
+                            >
+                              <img
+                                src={item.image}
+                                alt={item.title}
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105 pointer-events-none select-none"
+                              />
+                              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span className="text-[10px] font-mono uppercase text-primary tracking-widest bg-black/60 px-2.5 py-1.5 rounded-full border border-primary/20">Zoom</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </motion.div>
             ) : (
               <motion.div
                 key="gallery-view"
@@ -358,8 +491,14 @@ export function AchievementsSection() {
                 {/* Main Image Panel */}
                 <div className="w-full bg-[#101010] rounded-3xl border border-white/5 p-4 sm:p-8 flex flex-col shadow-xl shadow-black/40 overflow-hidden relative">
                   
-                  {/* Image Container / Collage Support */}
-                  <div className="relative aspect-video lg:aspect-[16/10] w-full rounded-2xl overflow-hidden bg-[#161616] border border-white/5 group flex items-center justify-center">
+                  {/* Image Container / Lightbox Support */}
+                  <div 
+                    onClick={() => {
+                      setLightboxImg(activeGalleryItem.image);
+                      setLightboxTitle(activeGalleryItem.title);
+                    }}
+                    className="relative aspect-video lg:aspect-[16/10] w-full rounded-2xl overflow-hidden bg-[#161616] border border-white/5 group flex items-center justify-center cursor-zoom-in hover:border-primary/20 transition-colors"
+                  >
                     <AnimatePresence mode="wait">
                       <motion.img
                         key={activeGalleryItem.id}
@@ -373,16 +512,27 @@ export function AchievementsSection() {
                       />
                     </AnimatePresence>
                     
+                    {/* Zoom overlay on hover */}
+                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-15 flex items-center justify-center">
+                      <span className="text-[10px] font-mono uppercase text-primary tracking-widest bg-black/60 px-3 py-2 rounded-full border border-primary/20">Zoom Media</span>
+                    </div>
+                    
                     {/* Navigation Chevrons Over Image */}
                     <button
-                      onClick={prevGalleryItem}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        prevGalleryItem();
+                      }}
                       className="absolute left-4 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-black/60 transition-all duration-300 cursor-pointer z-20"
                       aria-label="Previous image"
                     >
                       <ChevronLeft className="w-5 h-5" />
                     </button>
                     <button
-                      onClick={nextGalleryItem}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        nextGalleryItem();
+                      }}
                       className="absolute right-4 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-black/60 transition-all duration-300 cursor-pointer z-20"
                       aria-label="Next image"
                     >
@@ -445,7 +595,6 @@ export function AchievementsSection() {
                 {/* Right Panel / Desktop Selector Directory */}
                 <div className="hidden lg:flex flex-col w-full h-[600px] xl:h-[650px] shrink-0">
                   <div className="flex items-center gap-2 mb-4 px-1">
-                    {/* Camera icon removed */}
                     <span className="text-[10px] font-mono uppercase tracking-widest text-primary/50 font-semibold">Media Directory</span>
                   </div>
                   
@@ -506,7 +655,6 @@ export function AchievementsSection() {
                 {/* Mobile Swipeable Thumbnail strip */}
                 <div className="w-full lg:hidden flex flex-col mt-2">
                   <div className="flex items-center gap-2 mb-3 px-1">
-                    {/* Camera icon removed */}
                     <span className="text-[9px] font-mono uppercase tracking-widest text-primary/50">Swipe to Explore</span>
                   </div>
                   
@@ -554,6 +702,47 @@ export function AchievementsSection() {
           </AnimatePresence>
         </div>
       </section>
+
+      {/* Full-Screen Lightbox Modal for Certificate / Badge Zoom */}
+      <AnimatePresence>
+        {lightboxImg && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setLightboxImg(null)}
+            className="fixed inset-0 w-screen h-screen bg-black/95 backdrop-blur-md z-[9999] flex flex-col items-center justify-center p-4 sm:p-8 cursor-zoom-out"
+          >
+            {/* Top Close Bar */}
+            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-50 flex items-center gap-4">
+              <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest hidden sm:inline select-none">{lightboxTitle}</span>
+              <button 
+                onClick={() => setLightboxImg(null)}
+                className="bg-black/80 hover:bg-primary hover:text-black text-white/80 p-2.5 rounded-full border border-white/10 transition-all cursor-pointer shadow-lg"
+                title="Close"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            {/* Expanded Image Card */}
+            <motion.div 
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-4xl max-h-[85vh] flex items-center justify-center rounded-2xl overflow-hidden border border-white/10 bg-zinc-950/80 shadow-2xl p-1"
+            >
+              <img
+                src={lightboxImg}
+                alt={lightboxTitle}
+                className="max-w-full max-h-[80vh] object-contain rounded-xl select-none"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

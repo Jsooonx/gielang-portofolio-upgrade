@@ -1,4 +1,4 @@
-import { ProjectItem, Achievement, GalleryItem } from "./types";
+import { ProjectItem, Achievement, GalleryItem, JourneyItem } from "./types";
 
 export const projectsData: ProjectItem[] = [
   {
@@ -447,4 +447,62 @@ export const galleryData: GalleryItem[] = [
     ]
   }
 ];
+
+export const journeyData: JourneyItem[] = [
+  {
+    id: "cs50-curriculum",
+    duration: "Jan - March 2026",
+    title: "CS50: Introduction to Computer Science",
+    platform: "Harvard University (via edX)",
+    description: "Deep-dived into core computer science concepts, memory management, and lower-level systems.",
+    image: "/images/cs50.jpg",
+    details: [
+      "Wrote algorithms in C to manage memory pointers, custom data structures, and buffer allocations.",
+      "Learned relational database modeling and transactional querying using SQL.",
+      "Acquired backend fundamentals by building dynamic web applications with Python, Flask, and SQLite.",
+      "Credential Repository: github.com/Jsooonx/CS50-2026"
+    ],
+    credentialUrl: "https://github.com/Jsooonx/CS50-2026"
+  },
+  {
+    id: "hackerrank-curriculum",
+    duration: "Feb - Present 2026",
+    title: "Problem Solving & Algorithm Grinding",
+    platform: "HackerRank",
+    description: "Dedicated daily practice to solve complex algorithmic puzzles, reinforcing efficiency and complexity analysis.",
+    image: "/images/hackerrankbadges.png",
+    details: [
+      "Achieved 5★ Gold Badge in Python, demonstrating advanced script optimization.",
+      "Earned 4★ in C++ and 3★ in C, focusing on pointers, memory allocation, and class designs.",
+      "Learned the mathematical foundations of graph traversal, sorting, and search space optimization."
+    ],
+    credentialUrl: "https://www.hackerrank.com/profile/Jsooonx"
+  },
+  {
+    id: "odin-curriculum",
+    duration: "Feb 2026",
+    title: "Foundational HTML, CSS & JavaScript",
+    platform: "The Odin Project",
+    description: "Mastered the core building blocks of web development through hands-on project-based challenges.",
+    image: "/images/theodinproject.png",
+    details: [
+      "Structured responsive web pages using modern HTML5 semantic elements.",
+      "Styled layout structures using advanced CSS Flexbox and Grid systems.",
+      "Built interactive browser applications utilizing DOM manipulation in vanilla JavaScript."
+    ]
+  },
+  {
+    id: "fcc-curriculum",
+    duration: "Jan - Feb 2026",
+    title: "Scientific Computing & Python Algorithms",
+    platform: "freeCodeCamp",
+    description: "Focused on core programming logic, automation scripts, and algorithmic problem-solving.",
+    image: "/images/freecodecamp.webp",
+    details: [
+      "Learned Python language fundamentals, variables, expressions, and loops.",
+      "Wrote algorithms to perform statistical analysis and numerical computations."
+    ]
+  }
+];
+
 

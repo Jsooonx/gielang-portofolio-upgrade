@@ -39,3 +39,14 @@ export interface GalleryItem {
   details?: string[];
 }
 
+export interface JourneyItem {
+  id: string;
+  duration: string;
+  title: string;
+  platform: string;
+  description: string;
+  image: string;
+  details: string[];
+  credentialUrl?: string;
+}
+
