@@ -140,34 +140,8 @@ export function FooterSection({ onNavigate }: FooterSectionProps) {
       <div className="relative z-10 pt-[8vw] pb-0">
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[radial-gradient(circle,rgba(222,219,200,0.06)_0%,transparent_65%)] pointer-events-none" />
 
-        <div className="max-w-[1400px] mx-auto px-6 sm:px-12 md:px-16 grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-16 md:gap-8 items-start">
-          <div className="flex flex-col gap-1 md:pt-24">
-            <motion.span
-              style={{ ...pagesLabel, willChange: "transform, opacity" }}
-              className="font-mono text-[9px] tracking-[0.3em] uppercase text-primary/40 mb-4 block"
-            >
-              Pages
-            </motion.span>
-
-            {navLinks.map((link, i) => (
-              <motion.div
-                key={link.label}
-                style={{ ...navReveal[i], willChange: "transform, opacity" }}
-              >
-                <RolloverNavLink
-                  label={link.label}
-                  onClick={() => {
-                    if (link.href.startsWith("mailto:")) {
-                      window.location.href = link.href;
-                    } else {
-                      onNavigate(link.href);
-                    }
-                  }}
-                />
-              </motion.div>
-            ))}
-          </div>
-
+        <div className="max-w-[1400px] mx-auto px-6 sm:px-12 md:px-16 flex flex-col gap-12 md:gap-16">
+          {/* Center Statement */}
           <div className="flex flex-col items-center text-center gap-0 max-w-[520px] mx-auto w-full select-none">
             {centerWords.map(({ text, className, reveal }) => (
               <div key={text} className="overflow-hidden">
@@ -181,31 +155,61 @@ export function FooterSection({ onNavigate }: FooterSectionProps) {
             ))}
           </div>
 
-          <div className="flex flex-col gap-1 md:pt-24 md:items-end">
-            <motion.span
-              style={{ ...followLabel, willChange: "transform, opacity" }}
-              className="font-mono text-[9px] tracking-[0.3em] uppercase text-primary/40 mb-4 md:text-right block"
-            >
-              Follow On
-            </motion.span>
-
-            {socialLinks.map((link, i) => (
-              <motion.a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ ...socialReveal[i], willChange: "transform, opacity" }}
-                className="group relative overflow-hidden text-left md:text-right block w-fit md:ml-auto"
+          {/* Pages + Socials Side by Side */}
+          <div className="grid grid-cols-2 gap-6 sm:gap-8 md:gap-12">
+            <div className="flex flex-col gap-1">
+              <motion.span
+                style={{ ...pagesLabel, willChange: "transform, opacity" }}
+                className="font-mono text-[9px] tracking-[0.3em] uppercase text-primary/40 mb-4 block"
               >
-                <span className="block font-sans font-black text-xl sm:text-2xl md:text-3xl tracking-tighter text-[#E1E0CC]/70 transition-transform duration-300 ease-out group-hover:-translate-y-full">
-                  {link.label}
-                </span>
-                <span className="absolute inset-0 block font-sans font-black text-xl sm:text-2xl md:text-3xl tracking-tighter text-primary transition-transform duration-300 ease-out translate-y-full group-hover:translate-y-0">
-                  {link.label}
-                </span>
-              </motion.a>
-            ))}
+                Pages
+              </motion.span>
+
+              {navLinks.map((link, i) => (
+                <motion.div
+                  key={link.label}
+                  style={{ ...navReveal[i], willChange: "transform, opacity" }}
+                >
+                  <RolloverNavLink
+                    label={link.label}
+                    onClick={() => {
+                      if (link.href.startsWith("mailto:")) {
+                        window.location.href = link.href;
+                      } else {
+                        onNavigate(link.href);
+                      }
+                    }}
+                  />
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="flex flex-col gap-1 items-end">
+              <motion.span
+                style={{ ...followLabel, willChange: "transform, opacity" }}
+                className="font-mono text-[9px] tracking-[0.3em] uppercase text-primary/40 mb-4 text-right block"
+              >
+                Follow On
+              </motion.span>
+
+              {socialLinks.map((link, i) => (
+                <motion.a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ ...socialReveal[i], willChange: "transform, opacity" }}
+                  className="group relative overflow-hidden text-right block w-fit ml-auto"
+                >
+                  <span className="block font-sans font-black text-xl sm:text-2xl md:text-3xl tracking-tighter text-[#E1E0CC]/70 transition-transform duration-300 ease-out group-hover:-translate-y-full">
+                    {link.label}
+                  </span>
+                  <span className="absolute inset-0 block font-sans font-black text-xl sm:text-2xl md:text-3xl tracking-tighter text-primary transition-transform duration-300 ease-out translate-y-full group-hover:translate-y-0">
+                    {link.label}
+                  </span>
+                </motion.a>
+              ))}
+            </div>
           </div>
         </div>
 

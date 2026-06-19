@@ -158,7 +158,8 @@ export function AchievementsSection() {
         </div>
 
         <div 
-          className="max-w-2xl lg:max-w-[860px] xl:max-w-[1060px] 2xl:max-w-6xl mx-auto relative z-10 px-0 lg:px-8"
+          className="max-w-2xl lg:max-w-[860px] xl:max-w-[1060px] 2xl:max-w-6xl mx-auto relative z-10 px-0 lg:px-8 w-full"
+          style={{ contain: 'inline-size' }}
         >
           <AnimatePresence mode="wait">
             {viewMode === "timeline" ? (
@@ -486,10 +487,10 @@ export function AchievementsSection() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full flex flex-col lg:grid lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_400px] gap-8 items-start"
+                className="w-full overflow-hidden flex flex-col items-stretch lg:grid lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_400px] gap-8 lg:items-start"
               >
                 {/* Main Image Panel */}
-                <div className="w-full bg-[#101010] rounded-3xl border border-white/5 p-4 sm:p-8 flex flex-col shadow-xl shadow-black/40 overflow-hidden relative">
+                <div className="w-full min-w-0 bg-[#101010] rounded-2xl sm:rounded-3xl border border-white/5 p-3 sm:p-6 flex flex-col shadow-xl shadow-black/40 overflow-hidden relative">
                   
                   {/* Image Container / Lightbox Support */}
                   <div 
@@ -497,7 +498,7 @@ export function AchievementsSection() {
                       setLightboxImg(activeGalleryItem.image);
                       setLightboxTitle(activeGalleryItem.title);
                     }}
-                    className="relative aspect-video lg:aspect-[16/10] w-full rounded-2xl overflow-hidden bg-[#161616] border border-white/5 group flex items-center justify-center cursor-zoom-in hover:border-primary/20 transition-colors"
+                    className="relative aspect-video lg:aspect-[16/10] w-full rounded-xl sm:rounded-2xl overflow-hidden bg-[#161616] border border-white/5 group cursor-zoom-in hover:border-primary/20 transition-colors"
                   >
                     <AnimatePresence mode="wait">
                       <motion.img
@@ -508,7 +509,8 @@ export function AchievementsSection() {
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.95 }}
                         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                        className="w-full h-full object-contain pointer-events-none select-none z-10"
+                        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain' }}
+                        className="pointer-events-none select-none z-10"
                       />
                     </AnimatePresence>
                     
@@ -523,7 +525,7 @@ export function AchievementsSection() {
                         e.stopPropagation();
                         prevGalleryItem();
                       }}
-                      className="absolute left-4 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-black/60 transition-all duration-300 cursor-pointer z-20"
+                      className="absolute left-2 sm:left-4 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-black/60 transition-all duration-300 cursor-pointer z-20"
                       aria-label="Previous image"
                     >
                       <ChevronLeft className="w-5 h-5" />
@@ -533,14 +535,14 @@ export function AchievementsSection() {
                         e.stopPropagation();
                         nextGalleryItem();
                       }}
-                      className="absolute right-4 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-black/60 transition-all duration-300 cursor-pointer z-20"
+                      className="absolute right-2 sm:right-4 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-black/60 transition-all duration-300 cursor-pointer z-20"
                       aria-label="Next image"
                     >
                       <ChevronRight className="w-5 h-5" />
                     </button>
 
                     {/* Index Indicator Badge */}
-                    <div className="absolute bottom-4 right-4 bg-black/50 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[10px] font-mono text-primary select-none z-20">
+                    <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 bg-black/50 backdrop-blur-md border border-white/10 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-mono text-primary select-none z-20">
                       {String(activeIdx + 1).padStart(2, '0')} / {String(galleryData.length).padStart(2, '0')}
                     </div>
                   </div>
@@ -553,9 +555,9 @@ export function AchievementsSection() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -15 }}
                       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                      className="mt-6 sm:mt-8 flex-grow"
+                      className="mt-4 sm:mt-6 flex-grow min-w-0"
                     >
-                      <div className="flex flex-wrap items-center gap-3 text-[10px] font-mono uppercase tracking-wider text-primary/70 mb-3">
+                      <div className="flex flex-wrap items-center gap-2 text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-primary/70 mb-2 sm:mb-3">
                         <span className="bg-primary/10 border border-primary/20 px-2.5 py-0.5 rounded-full text-primary font-semibold">
                           {activeGalleryItem.category}
                         </span>
@@ -565,11 +567,11 @@ export function AchievementsSection() {
                         </span>
                       </div>
 
-                      <h3 className="font-serif italic text-2xl sm:text-4xl text-[#E1E0CC] tracking-wide mb-4 leading-tight">
+                      <h3 className="font-serif italic text-xl sm:text-3xl text-[#E1E0CC] tracking-wide mb-2 sm:mb-4 leading-tight">
                         {activeGalleryItem.title}
                       </h3>
 
-                      <p className="text-xs sm:text-sm text-gray-400 font-light leading-relaxed mb-6">
+                      <p className="text-[11px] sm:text-sm text-gray-400 font-light leading-relaxed mb-4 sm:mb-6">
                         {activeGalleryItem.description}
                       </p>
 
@@ -653,7 +655,7 @@ export function AchievementsSection() {
                 </div>
 
                 {/* Mobile Swipeable Thumbnail strip */}
-                <div className="w-full lg:hidden flex flex-col mt-2">
+                <div className="w-full lg:hidden mt-2">
                   <div className="flex items-center gap-2 mb-3 px-1">
                     <span className="text-[9px] font-mono uppercase tracking-widest text-primary/50">Swipe to Explore</span>
                   </div>
@@ -661,40 +663,42 @@ export function AchievementsSection() {
                   <div 
                     data-lenis-prevent
                     onWheel={(e) => e.stopPropagation()}
-                    className="flex overflow-x-auto gap-3 pb-4 px-1 snap-x scrollbar-none"
+                    className="w-full overflow-x-auto pb-4 scrollbar-none"
                   >
-                    {galleryData.map((item, idx) => {
-                      const isActive = idx === activeIdx;
-                      return (
-                        <button
-                          key={item.id}
-                          onClick={() => setActiveIdx(idx)}
-                          className={`flex-none w-28 rounded-xl border p-2 flex flex-col gap-2 transition-all duration-300 snap-start cursor-pointer ${
-                            isActive 
-                              ? "bg-[#101010] border-primary/30 shadow-md shadow-black/30" 
-                              : "bg-[#101010]/60 border-white/5 hover:border-white/10"
-                          }`}
-                        >
-                          <div className="aspect-[4/3] w-full rounded-lg overflow-hidden border border-white/5 bg-[#161616]">
-                            <img
-                              src={item.image}
-                              alt={item.title}
-                              className={`w-full h-full object-cover transition-all duration-500 ${
-                                isActive ? "grayscale-0 opacity-100" : "grayscale opacity-50"
-                              }`}
-                            />
-                          </div>
-                          <div className="min-w-0">
-                            <p className="text-[8px] font-mono text-primary/50 uppercase truncate">
-                              {item.year}
-                            </p>
-                            <h4 className={`text-[10px] font-normal truncate mt-0.5 ${isActive ? "text-primary font-medium" : "text-[#E1E0CC]/80"}`}>
-                              {item.title}
-                            </h4>
-                          </div>
-                        </button>
-                      );
-                    })}
+                    <div className="inline-flex gap-3 px-1 snap-x w-max">
+                      {galleryData.map((item, idx) => {
+                        const isActive = idx === activeIdx;
+                        return (
+                          <button
+                            key={item.id}
+                            onClick={() => setActiveIdx(idx)}
+                            className={`flex-none w-28 rounded-xl border p-2 flex flex-col gap-2 transition-all duration-300 snap-start cursor-pointer ${
+                              isActive 
+                                ? "bg-[#101010] border-primary/30 shadow-md shadow-black/30" 
+                                : "bg-[#101010]/60 border-white/5 hover:border-white/10"
+                            }`}
+                          >
+                            <div className="aspect-[4/3] w-full rounded-lg overflow-hidden border border-white/5 bg-[#161616]">
+                              <img
+                                src={item.image}
+                                alt={item.title}
+                                className={`w-full h-full object-cover transition-all duration-500 ${
+                                  isActive ? "grayscale-0 opacity-100" : "grayscale opacity-50"
+                                }`}
+                              />
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-[8px] font-mono text-primary/50 uppercase truncate">
+                                {item.year}
+                              </p>
+                              <h4 className={`text-[10px] font-normal truncate mt-0.5 ${isActive ? "text-primary font-medium" : "text-[#E1E0CC]/80"}`}>
+                                {item.title}
+                              </h4>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               </motion.div>
